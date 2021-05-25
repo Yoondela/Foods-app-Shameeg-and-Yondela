@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">foodApplication</string>
+    <string name="Input_prompt">What did you eat today ?</string>
+    <string name="Input_amount">How many servings ?</string>
+    <string name="List_Header">Your Food</string>
+    <string name="AddToListBt">Add</string>
+    <string name="SubmitButton">Continue</string>
 </resources>
