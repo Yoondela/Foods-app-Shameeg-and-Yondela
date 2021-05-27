@@ -53,4 +53,10 @@ class MainActivity : AppCompatActivity(){
         textViewCalories.text = calories.toString()
         textViewOutput.append("$food $foodAmount\n")
     }
+
+    fun clearAll(v: View){
+
+        var textViewOutput: TextView = findViewById(R.id.tViewFoods)
+        textViewOutput.text = ""
+    }
 }
