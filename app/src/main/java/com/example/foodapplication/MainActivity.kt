@@ -21,21 +21,12 @@ class MainActivity : AppCompatActivity(){
 
     fun goNextPage(){
 
-        val welcomeFragment = WelcomeFragment()
         val inputFragment = InputFragment()
-        val btContinue : Button = findViewById(R.id.btnContinue)
 
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.flFragment, welcomeFragment)
+            replace(R.id.mainLayout, inputFragment)
             commit()
         }
 
-        btContinue.setOnClickListener{
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.flFragment, inputFragment)
-                commit()
-                addToBackStack(null)
-            }
-        }
     }
 }
