@@ -2,12 +2,8 @@ package com.example.foodapplication
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.view.*
+import android.widget.*
 import androidx.fragment.app.FragmentTransaction
 
 class InputFragment : Fragment(R.layout.fragment_input){
@@ -26,11 +22,14 @@ class InputFragment : Fragment(R.layout.fragment_input){
         val btnAdd: Button = root.findViewById(R.id.btnAdd)
         val textViewCalories: TextView = root.findViewById(R.id.textView2)
         val btnClear: Button = root.findViewById(R.id.btnClear)
-        val textViewOutput: TextView = root.findViewById(R.id.tViewFoods)
         val food = editTextFood.text
         val foodAmount = amount.text
         val btnContinue = root.findViewById<Button>(R.id.btnCont)
-
+        val list: ListView = root.findViewById(R.id.list)
+        val arrayList = ArrayList<String>()
+        val myAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, arrayList)
+        list.adapter = myAdapter
+        
         btnAdd.setOnClickListener {
             when {
                 food.toString() == "Apple" -> {
@@ -57,19 +56,22 @@ class InputFragment : Fragment(R.layout.fragment_input){
             }
 
             textViewCalories.text = calories.toString()
-            textViewOutput.append("$food $foodAmount\n")
+            arrayList.add("$food $foodAmount")
+            myAdapter.notifyDataSetChanged()
+
         }
 
         btnClear.setOnClickListener {
             calories = 0
             textViewCalories.text = calories.toString()
-            textViewOutput.text = ""
+            arrayList.clear()
+            myAdapter.notifyDataSetChanged()
         }
 
         btnContinue.setOnClickListener {
             val two = OutputFragment()
 
-            var transaction: FragmentTransaction? = fragmentManager?.beginTransaction()
+            val transaction: FragmentTransaction? = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.mainLayout, two)
             transaction?.commit()
 //            transaction?.addToBackStack(null)
