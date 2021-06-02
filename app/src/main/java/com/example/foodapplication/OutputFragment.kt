@@ -3,10 +3,18 @@ package com.example.foodapplication
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.*
+import android.widget.TextView
 
 class OutputFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_output, container, false)
+
+        val root = inflater.inflate(R.layout.fragment_output, container, false)
+        var totalCals = root.findViewById<TextView>(R.id.totalCalories)
+
+        val calories: String? = arguments?.getString("calories")
+        totalCals.text = "total amount of calories consumed: $calories"
+
+        return root
     }
 }

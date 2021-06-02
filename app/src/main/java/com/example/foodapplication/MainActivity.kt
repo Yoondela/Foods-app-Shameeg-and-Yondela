@@ -3,7 +3,7 @@ package com.example.foodapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity(), Communicator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity(){
         setDefaultScreen()
     }
 
-    private fun setDefaultScreen(){
+    private fun setDefaultScreen() {
 
         val inputFragment = InputFragment()
 
@@ -20,5 +20,18 @@ class MainActivity : AppCompatActivity(){
             replace(R.id.mainLayout, inputFragment)
             commit()
         }
+    }
+
+    override fun passData(calories: String) {
+        val bundle = Bundle()
+        bundle.putString("calories", calories)
+
+        val transaction = this.supportFragmentManager.beginTransaction()
+        val outputFragment = OutputFragment()
+
+        outputFragment.arguments = bundle
+        transaction.replace(R.id.mainLayout, outputFragment)
+//        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

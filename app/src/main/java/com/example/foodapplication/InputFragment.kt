@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.*
-import androidx.fragment.app.FragmentTransaction
 
 class InputFragment : Fragment(R.layout.fragment_input){
 
@@ -12,8 +11,8 @@ class InputFragment : Fragment(R.layout.fragment_input){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-
         val root = inflater.inflate(R.layout.fragment_input, container, false)
+        var communicator: Communicator = activity as Communicator
 
         val mockFoodData: HashMap<String, Int> =
             hashMapOf("apple" to 95, "banana" to 89, "egg" to 155)
@@ -69,12 +68,8 @@ class InputFragment : Fragment(R.layout.fragment_input){
         }
 
         btnContinue.setOnClickListener {
-            val two = OutputFragment()
 
-            val transaction: FragmentTransaction? = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.mainLayout, two)
-            transaction?.commit()
-//            transaction?.addToBackStack(null)
+            communicator.passData(calories.toString())
         }
 
         return root
