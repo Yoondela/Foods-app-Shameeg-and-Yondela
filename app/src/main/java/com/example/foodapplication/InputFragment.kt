@@ -19,7 +19,6 @@ class InputFragment : Fragment(R.layout.fragment_input){
         val editTextFood: EditText = root.findViewById(R.id.txtFood)
         val amount: EditText = root.findViewById(R.id.txtAmount)
         val btnAdd: Button = root.findViewById(R.id.btnAdd)
-        val textViewCalories: TextView = root.findViewById(R.id.textView2)
         val btnClear: Button = root.findViewById(R.id.btnClear)
         val food = editTextFood.text
         val foodAmount = amount.text
@@ -28,7 +27,7 @@ class InputFragment : Fragment(R.layout.fragment_input){
         val arrayList = ArrayList<String>()
         val myAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, arrayList)
         list.adapter = myAdapter
-        
+
         btnAdd.setOnClickListener {
             when {
                 food.toString() == "Apple" -> {
@@ -54,7 +53,6 @@ class InputFragment : Fragment(R.layout.fragment_input){
                 }
             }
 
-            textViewCalories.text = calories.toString()
             arrayList.add("$food $foodAmount")
             myAdapter.notifyDataSetChanged()
 
@@ -62,7 +60,6 @@ class InputFragment : Fragment(R.layout.fragment_input){
 
         btnClear.setOnClickListener {
             calories = 0
-            textViewCalories.text = calories.toString()
             arrayList.clear()
             myAdapter.notifyDataSetChanged()
         }
