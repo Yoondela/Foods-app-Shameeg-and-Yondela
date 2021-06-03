@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.*
-import androidx.fragment.app.FragmentTransaction
 
 class InputFragment : Fragment(R.layout.fragment_input){
 
@@ -12,15 +11,14 @@ class InputFragment : Fragment(R.layout.fragment_input){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-
         val root = inflater.inflate(R.layout.fragment_input, container, false)
+        var communicator: Communicator = activity as Communicator
 
         val mockFoodData: HashMap<String, Int> =
             hashMapOf("apple" to 95, "banana" to 89, "egg" to 155)
         val editTextFood: EditText = root.findViewById(R.id.txtFood)
         val amount: EditText = root.findViewById(R.id.txtAmount)
         val btnAdd: Button = root.findViewById(R.id.btnAdd)
-        val textViewCalories: TextView = root.findViewById(R.id.textView2)
         val btnClear: Button = root.findViewById(R.id.btnClear)
         val food = editTextFood.text
         val foodAmount = amount.text
@@ -29,7 +27,7 @@ class InputFragment : Fragment(R.layout.fragment_input){
         val arrayList = ArrayList<String>()
         val myAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, arrayList)
         list.adapter = myAdapter
-        
+
         btnAdd.setOnClickListener {
             when {
                 food.toString() == "Apple" -> {
@@ -55,7 +53,6 @@ class InputFragment : Fragment(R.layout.fragment_input){
                 }
             }
 
-            textViewCalories.text = calories.toString()
             arrayList.add("$food $foodAmount")
             myAdapter.notifyDataSetChanged()
 
@@ -63,18 +60,13 @@ class InputFragment : Fragment(R.layout.fragment_input){
 
         btnClear.setOnClickListener {
             calories = 0
-            textViewCalories.text = calories.toString()
             arrayList.clear()
             myAdapter.notifyDataSetChanged()
         }
 
         btnContinue.setOnClickListener {
-            val two = OutputFragment()
 
-            val transaction: FragmentTransaction? = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.mainLayout, two)
-            transaction?.commit()
-//            transaction?.addToBackStack(null)
+            communicator.passData(calories.toString())
         }
 
         return root
