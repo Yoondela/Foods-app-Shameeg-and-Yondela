@@ -13,15 +13,10 @@ class InputFragment : Fragment(R.layout.fragment_input){
 
         val root = inflater.inflate(R.layout.fragment_input, container, false)
         var communicator: Communicator = activity as Communicator
-
-        val mockFoodData: HashMap<String, Int> =
-            hashMapOf("apple" to 95, "banana" to 89, "egg" to 155)
         val editTextFood: EditText = root.findViewById(R.id.txtFood)
         val amount: EditText = root.findViewById(R.id.txtAmount)
         val btnAdd: Button = root.findViewById(R.id.btnAdd)
         val btnClear: Button = root.findViewById(R.id.btnClear)
-        val food = editTextFood.text
-        val foodAmount = amount.text
         val btnContinue = root.findViewById<Button>(R.id.btnCont)
         val list: ListView = root.findViewById(R.id.list)
         val arrayList = ArrayList<String>()
@@ -29,47 +24,21 @@ class InputFragment : Fragment(R.layout.fragment_input){
         list.adapter = myAdapter
 
         btnAdd.setOnClickListener {
-            when {
-                food.toString() == "Apple" -> {
-                    calories += if (foodAmount.toString() == "") {
-                        mockFoodData["apple"]!!
-                    } else {
-                        mockFoodData["apple"]?.times(foodAmount.toString().toInt())!!
-                    }
-                }
-                food.toString() == "Banana" -> {
-                    calories += if (foodAmount.toString() == "") {
-                        mockFoodData["banana"]!!
-                    } else {
-                        mockFoodData["banana"]?.times(foodAmount.toString().toInt())!!
-                    }
-                }
-                food.toString() == "Egg" -> {
-                    calories += if (foodAmount.toString() == "") {
-                        mockFoodData["egg"]!!
-                    } else {
-                        mockFoodData["egg"]?.times(foodAmount.toString().toInt())!!
-                    }
-                }
-            }
-
-            arrayList.add("$food $foodAmount")
+            calories = communicator.checkCals()
+            arrayList.add(editTextFood.text.toString() + " " +  amount.text.toString())
             myAdapter.notifyDataSetChanged()
-
         }
 
         btnClear.setOnClickListener {
-            calories = 0
+            calories = communicator.resetCals()
             arrayList.clear()
             myAdapter.notifyDataSetChanged()
         }
 
         btnContinue.setOnClickListener {
-
             communicator.passData(calories.toString())
         }
 
         return root
     }
-
 }
