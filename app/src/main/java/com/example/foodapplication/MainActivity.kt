@@ -9,7 +9,8 @@ import java.io.IOException
 
 class MainActivity : AppCompatActivity(), Communicator {
 
-    private var calories = ""
+    private var calories = 0.0
+    var listOfFood = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,30 +44,22 @@ class MainActivity : AppCompatActivity(), Communicator {
         transaction.commit()
     }
 
-    override fun checkCals(response: Response) {
-        if(response.isSuccessful){
-            val jsonResponse = response.body()?.string()
-            val gson = GsonBuilder().create()
-            val data = gson.fromJson(jsonResponse, Data::class.java)
-//            val items = gson.fromJson(jsonResponse, Items::class.java)
-
-            for (element in data.items){
-                calories = element.calories
-            }
-        }
-    }
-
-    override fun resetCals():String{
-        calories = ""
+    override fun resetCals():Double{
+        calories = 0.0
 
         return calories
     }
 
-    override fun getJson():String{
+    override fun getJson():Double{
 
-        val editTextFood: EditText = findViewById(R.id.txtFood)
-//        val amount: EditText = findViewById(R.id.txtAmount)
-        val query = editTextFood.text.toString()
+        var query = StringBuilder()
+        val inputFrag = InputFragment()
+        println(inputFrag.arrayList)
+        val listOfFoods = getFoodList()
+        for (i in listOfFoods){
+            query.append("$i ")
+        }
+
         val client = OkHttpClient()
         val url = "https://calorieninjas.p.rapidapi.com/v1/nutrition?query= $query"
         val request = Request.Builder()
@@ -83,13 +76,35 @@ class MainActivity : AppCompatActivity(), Communicator {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                checkCals(response)
+                if(response.isSuccessful){
+
+                    val jsonResponse = response.body()?.string()
+                    val gson = GsonBuilder().create()
+                    val data = gson.fromJson(jsonResponse, Data::class.java)
+
+                    for (element in data.items){
+                        calories += element.calories
+                    }
+                    println(calories)
+                    passData(calories.toString())
+                }
             }
         })
 
+        println(query)
         return calories
+    }
+
+    override fun getFoodList():ArrayList<String>{
+
+        val etFood = findViewById<EditText>(R.id.txtFood)
+
+        listOfFood.add(etFood.text.toString())
+        println(listOfFood)
+
+        return listOfFood
     }
 }
 
 class Data(val items:List<Items>)
-class Items(val calories:String)
+class Items(val calories:Double)
