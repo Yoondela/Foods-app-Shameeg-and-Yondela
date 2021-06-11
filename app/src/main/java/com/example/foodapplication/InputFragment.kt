@@ -7,8 +7,8 @@ import android.widget.*
 
 class InputFragment : Fragment(R.layout.fragment_input){
 
-    private var calories = 0
-
+    private var calories = ""
+    var arrayList = ArrayList<String>()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val root = inflater.inflate(R.layout.fragment_input, container, false)
@@ -19,12 +19,13 @@ class InputFragment : Fragment(R.layout.fragment_input){
         val btnClear: Button = root.findViewById(R.id.btnClear)
         val btnContinue = root.findViewById<Button>(R.id.btnCont)
         val list: ListView = root.findViewById(R.id.list)
-        val arrayList = ArrayList<String>()
+//        val arrayList = ArrayList<String>()
         val myAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, arrayList)
         list.adapter = myAdapter
 
         btnAdd.setOnClickListener {
-            calories = communicator.checkCals()
+//            communicator.getJson()
+            calories = communicator.getJson()
             arrayList.add(editTextFood.text.toString() + " " +  amount.text.toString())
             myAdapter.notifyDataSetChanged()
         }
@@ -36,9 +37,11 @@ class InputFragment : Fragment(R.layout.fragment_input){
         }
 
         btnContinue.setOnClickListener {
-            communicator.passData(calories.toString())
+            communicator.passData(calories)
         }
 
         return root
     }
+
+
 }

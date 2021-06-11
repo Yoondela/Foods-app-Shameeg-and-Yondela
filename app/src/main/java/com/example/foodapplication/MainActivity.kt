@@ -3,16 +3,19 @@ package com.example.foodapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
+import com.google.gson.GsonBuilder
+import okhttp3.*
+import java.io.IOException
 
 class MainActivity : AppCompatActivity(), Communicator {
 
-    var calories = 0
+    private var calories = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState==null){
+        if (savedInstanceState == null) {
             setDefaultScreen()
         }
     }
@@ -40,45 +43,53 @@ class MainActivity : AppCompatActivity(), Communicator {
         transaction.commit()
     }
 
-    override fun checkCals():Int{
+    override fun checkCals(response: Response) {
+        if(response.isSuccessful){
+            val jsonResponse = response.body()?.string()
+            val gson = GsonBuilder().create()
+            val data = gson.fromJson(jsonResponse, Data::class.java)
+//            val items = gson.fromJson(jsonResponse, Items::class.java)
 
-
-        val mockFoodData: HashMap<String, Int> =
-            hashMapOf("apple" to 95, "banana" to 89, "egg" to 155)
-        val editTextFood: EditText = findViewById(R.id.txtFood)
-        val amount: EditText = findViewById(R.id.txtAmount)
-        val food = editTextFood.text
-        val foodAmount = amount.text
-
-        when {
-            food.toString() == "Apple" -> {
-                calories += if (foodAmount.toString() == "") {
-                    mockFoodData["apple"]!!
-                } else {
-                    mockFoodData["apple"]?.times(foodAmount.toString().toInt())!!
-                }
-            }
-            food.toString() == "Banana" -> {
-                calories += if (foodAmount.toString() == "") {
-                    mockFoodData["banana"]!!
-                } else {
-                    mockFoodData["banana"]?.times(foodAmount.toString().toInt())!!
-                }
-            }
-            food.toString() == "Egg" -> {
-                calories += if (foodAmount.toString() == "") {
-                    mockFoodData["egg"]!!
-                } else {
-                    mockFoodData["egg"]?.times(foodAmount.toString().toInt())!!
-                }
+            for (element in data.items){
+                calories = element.calories
             }
         }
+    }
+
+    override fun resetCals():String{
+        calories = ""
+
         return calories
     }
 
-    override fun resetCals():Int{
-        calories = 0
+    override fun getJson():String{
+
+        val editTextFood: EditText = findViewById(R.id.txtFood)
+//        val amount: EditText = findViewById(R.id.txtAmount)
+        val query = editTextFood.text.toString()
+        val client = OkHttpClient()
+        val url = "https://calorieninjas.p.rapidapi.com/v1/nutrition?query= $query"
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .addHeader("x-rapidapi-key", "d2e7ffc1f5mshfeab8c7bb8fb7d4p1c7c36jsnb23dcbe86dae")
+            .addHeader("x-rapidapi-host", "calorieninjas.p.rapidapi.com")
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                checkCals(response)
+            }
+        })
 
         return calories
     }
 }
+
+class Data(val items:List<Items>)
+class Items(val calories:String)
