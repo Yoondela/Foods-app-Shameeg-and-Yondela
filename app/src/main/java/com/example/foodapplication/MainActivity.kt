@@ -1,5 +1,6 @@
 package com.example.foodapplication
 
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
@@ -11,11 +12,13 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     private var calories = 0.0
     var listOfFood = ArrayList<String>()
+    var query = StringBuilder()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.grey)))
         if (savedInstanceState == null) {
             setDefaultScreen()
         }
@@ -44,19 +47,14 @@ class MainActivity : AppCompatActivity(), Communicator {
         transaction.commit()
     }
 
-    override fun resetCals():Double{
-        calories = 0.0
-
-        return calories
+    override fun resetCals(){
+        query.clear()
+        listOfFood.clear()
     }
 
     override fun getJson():Double{
 
-        var query = StringBuilder()
-        val inputFrag = InputFragment()
-        println(inputFrag.arrayList)
-        val listOfFoods = getFoodList()
-        for (i in listOfFoods){
+        for (i in listOfFood){
             query.append("$i ")
         }
 
@@ -85,13 +83,11 @@ class MainActivity : AppCompatActivity(), Communicator {
                     for (element in data.items){
                         calories += element.calories
                     }
-                    println(calories)
                     passData(calories.toString())
                 }
             }
         })
 
-        println(query)
         return calories
     }
 
@@ -100,7 +96,6 @@ class MainActivity : AppCompatActivity(), Communicator {
         val etFood = findViewById<EditText>(R.id.txtFood)
 
         listOfFood.add(etFood.text.toString())
-        println(listOfFood)
 
         return listOfFood
     }
