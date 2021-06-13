@@ -4,7 +4,7 @@ interface Communicator {
 
     fun passData(calories: String)
 
-    fun resetCals():Double
+    fun resetCals()
 
     fun getJson():Double
 

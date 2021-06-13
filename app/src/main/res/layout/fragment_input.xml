@@ -4,20 +4,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background"
     tools:context=".InputFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <EditText
             android:id="@+id/txtFood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="35dp"
             android:ems="10"
             android:hint="@string/Input_prompt"
+            android:textColor="@color/black"
+            android:textColorHint="#9b9b9b"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/txtAmount"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,21 +34,13 @@
             android:layout_marginTop="40dp"
             android:ems="10"
             android:hint="@string/Input_amount"
+            android:textColor="@color/black"
+            android:textColorHint="#9b9b9b"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/btnAdd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtFood" />
-
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/AddToListBt"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtAmount" />
 
         <ListView
             android:id="@+id/list"
@@ -58,28 +53,67 @@
             app:layout_constraintTop_toBottomOf="@+id/btnAdd"
             app:layout_constraintVertical_bias="0.062" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnCont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="56dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="16dp"
+            android:background="@drawable/grey_background"
             android:hint="@string/SubmitButton"
+            android:textColorHint="#9b9b9b"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnClear"
             app:layout_constraintRight_toRightOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/btnClear" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnClear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/ClearAllBt"
+            android:textColorHint="#9b9b9b"
+            android:background="@drawable/grey_background"
             app:layout_constraintTop_toBottomOf="@+id/list"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
+
+        <android.widget.Button
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/AddToListBt"
+            android:textColorHint="#9b9b9b"
+            android:background="@drawable/grey_background"            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtAmount" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/process"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="68dp"
+            android:layout_marginEnd="160dp"
+            android:layout_marginRight="160dp"
+            android:text="processing... "
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/btnCont"
+            app:layout_constraintLeft_toRightOf="@+id/progressBar"
+            app:layout_constraintTop_toBottomOf="@+id/btnClear" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
