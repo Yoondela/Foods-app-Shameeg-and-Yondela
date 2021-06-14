@@ -4,10 +4,4 @@ interface Communicator {
 
     fun passData(calories: String)
 
-    fun resetCals()
-
-    fun getJson():Double
-
-    fun getFoodList():ArrayList<String>
-
 }
