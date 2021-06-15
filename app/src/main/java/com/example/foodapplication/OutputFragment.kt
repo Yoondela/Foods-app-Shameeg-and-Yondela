@@ -7,12 +7,17 @@ import android.widget.TextView
 
 class OutputFragment : Fragment() {
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val root = inflater.inflate(R.layout.fragment_output, container, false)
         var totalCals = root.findViewById<TextView>(R.id.totalCalories)
+        var listOfCalories: ArrayList<String> = arguments?.getStringArrayList("calories")!!
+        var calories = 0.0
+        for(element in listOfCalories){
+            calories += element.toDouble()
+        }
 
-        val calories: String? = arguments?.getString("calories")
         totalCals.text = "total amount of calories consumed: $calories"
 
         return root

@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity(), Communicator {
         }
     }
 
-    override fun passData(calories: String) {
+    override fun passData(listOfCalories:ArrayList<String>) {
         val bundle = Bundle()
-        bundle.putString("calories", calories)
+        bundle.putStringArrayList("calories",listOfCalories)
 
         val transaction = this.supportFragmentManager.beginTransaction()
         val outputFragment = OutputFragment()
@@ -41,4 +41,4 @@ class MainActivity : AppCompatActivity(), Communicator {
 }
 
 class Data(val items:List<Items>)
-class Items(val calories:Double)
+class Items(val calories:String)
