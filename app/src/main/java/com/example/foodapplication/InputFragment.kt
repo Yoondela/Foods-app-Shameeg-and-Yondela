@@ -11,15 +11,16 @@ import java.lang.StringBuilder
 
 class InputFragment : Fragment(R.layout.fragment_input){
 
-    private var calories = 0.0
+    var calories = ""
     private var query= StringBuilder()
-    var listOfFood = ArrayList<String>()
+    private var listOfFood = ArrayList<String>()
+    var listOfCalories = ArrayList<String>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val root = inflater.inflate(R.layout.fragment_input, container, false)
-        var communicator: Communicator = activity as Communicator
-        var etFood: EditText = root.findViewById(R.id.txtFood)
+        val communicator: Communicator = activity as Communicator
+        val etFood: EditText = root.findViewById(R.id.txtFood)
         val btnAdd: Button = root.findViewById(R.id.btnAdd)
         val btnClear: Button = root.findViewById(R.id.btnClear)
         val btnContinue = root.findViewById<Button>(R.id.btnCont)
@@ -37,9 +38,10 @@ class InputFragment : Fragment(R.layout.fragment_input){
         }
 
         btnClear.setOnClickListener {
-            calories = 0.0
+            calories = ""
             query.clear()
             listOfFood.clear()
+            listOfCalories.clear()
             myAdapter.notifyDataSetChanged()
         }
 
@@ -75,9 +77,12 @@ class InputFragment : Fragment(R.layout.fragment_input){
                         val data = gson.fromJson(jsonResponse, Data::class.java)
 
                         for (element in data.items){
-                            calories += element.calories
+                            if (!listOfCalories.contains(element.calories)){
+                                listOfCalories.add(element.calories)
+                            }
                         }
-                        communicator.passData(calories.toString())
+                        communicator.passData(listOfCalories)
+
                     }
                 }
             })
