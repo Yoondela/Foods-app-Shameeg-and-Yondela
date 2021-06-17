@@ -4,29 +4,32 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.*
+import com.example.foodapplication.R.id.*
+import com.example.foodapplication.R.layout.fragment_input
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
 import java.lang.StringBuilder
 
-class InputFragment : Fragment(R.layout.fragment_input){
+class InputFragment : Fragment(){
 
-    private var calories = ""
+    internal class Data(val items:List<Items>)
+    internal class Items(val calories:String)
+
     private var query = StringBuilder()
     private var listOfFood = ArrayList<String>()
     var listOfCalories = ArrayList<String>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val root = inflater.inflate(R.layout.fragment_input, container, false)
-        val communicator: Communicator = activity as Communicator
-        val etFood: EditText = root.findViewById(R.id.txtFood)
-        val btnAdd: Button = root.findViewById(R.id.btnAdd)
-        val btnClear: Button = root.findViewById(R.id.btnClear)
-        val btnContinue = root.findViewById<Button>(R.id.btnCont)
-        val list: ListView = root.findViewById(R.id.list)
-        val progressBar:ProgressBar = root.findViewById(R.id.progressBar)
-        val tvProcessing: TextView = root.findViewById(R.id.process)
+        val root = inflater.inflate(fragment_input, container, false)
+        val etFood: EditText = root.findViewById(txtFood)
+        val btnAdd: Button = root.findViewById(btnAdd)
+        val btnClear: Button = root.findViewById(btnClear)
+        val btnContinue = root.findViewById<Button>(btnCont)
+        val list: ListView = root.findViewById(list)
+        val progressBar:ProgressBar = root.findViewById(progressBar)
+        val tvProcessing: TextView = root.findViewById(process)
         val myAdapter = ArrayAdapter(requireActivity(), R.layout.black_text_list, listOfFood)
         list.adapter = myAdapter
 
@@ -43,7 +46,6 @@ class InputFragment : Fragment(R.layout.fragment_input){
 
         btnClear.setOnClickListener {
 
-            calories = ""
             query.clear()
             listOfFood.clear()
             listOfCalories.clear()
@@ -83,7 +85,7 @@ class InputFragment : Fragment(R.layout.fragment_input){
                         }
                         query.clear()
                         println(query)
-                        communicator.passData(listOfCalories)
+                        passData(listOfCalories)
 
                     }
                 }
@@ -91,5 +93,18 @@ class InputFragment : Fragment(R.layout.fragment_input){
         }
 
         return root
+    }
+
+    fun passData(listOfCalories:ArrayList<String>) {
+        val bundle = Bundle()
+        bundle.putStringArrayList("calories",listOfCalories)
+
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        val outputFragment = OutputFragment()
+
+        outputFragment.arguments = bundle
+        transaction.replace(mainLayout, outputFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }
