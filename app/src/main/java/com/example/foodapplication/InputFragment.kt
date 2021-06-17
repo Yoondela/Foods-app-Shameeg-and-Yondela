@@ -14,15 +14,19 @@ import java.lang.StringBuilder
 class InputFragment : Fragment(){
 
     internal class Data(val items:List<Items>)
-    internal class Items(val calories:String)
+    internal class Items(val calories:Double)
 
     private var query = StringBuilder()
     private var listOfFood = ArrayList<String>()
-    var listOfCalories = ArrayList<String>()
+    var listOfCalories = ArrayList<Double>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(fragment_input, container, false)
 
-        val root = inflater.inflate(fragment_input, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val root = requireView()
         val etFood: EditText = root.findViewById(txtFood)
         val btnAdd: Button = root.findViewById(btnAdd)
         val btnClear: Button = root.findViewById(btnClear)
@@ -85,19 +89,17 @@ class InputFragment : Fragment(){
                         }
                         query.clear()
                         println(query)
-                        passData(listOfCalories)
+                        passData()
 
                     }
                 }
             })
         }
-
-        return root
     }
 
-    fun passData(listOfCalories:ArrayList<String>) {
+    fun passData() {
         val bundle = Bundle()
-        bundle.putStringArrayList("calories",listOfCalories)
+        bundle.putDoubleArray("calories", listOfCalories.toDoubleArray())
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         val outputFragment = OutputFragment()
