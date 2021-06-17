@@ -34,11 +34,9 @@ class InputFragment : Fragment(R.layout.fragment_input){
 
             listOfFood.add(etFood.text.toString())
             myAdapter.notifyDataSetChanged()
+            query.append(etFood.text.toString())
             etFood.text.clear()
 
-            for (i in listOfFood){
-                query.append("$i ")
-            }
         }
 
         btnClear.setOnClickListener {
@@ -82,7 +80,6 @@ class InputFragment : Fragment(R.layout.fragment_input){
                             listOfCalories.add(element.calories)
                         }
                         query.clear()
-                        println(query)
                         communicator.passData(listOfCalories)
 
                     }

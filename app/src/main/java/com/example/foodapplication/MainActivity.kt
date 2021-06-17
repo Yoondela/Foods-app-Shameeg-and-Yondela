@@ -18,10 +18,10 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     private fun setDefaultScreen() {
 
-        val inputFragment = InputFragment()
+        val loginFragment = LoginFragment()
 
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.mainLayout, inputFragment)
+            replace(R.id.mainLayout, loginFragment)
             commit()
         }
     }
@@ -37,6 +37,35 @@ class MainActivity : AppCompatActivity(), Communicator {
         transaction.replace(R.id.mainLayout, outputFragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    override fun goToRegister() {
+
+        val registerFragment = RegisterFragment()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.mainLayout, registerFragment)
+            commit()
+        }
+    }
+
+    override fun goToLogin() {
+
+        val loginFragment = LoginFragment()
+
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.mainLayout, loginFragment)
+            commit()
+        }
+    }
+
+    override fun goToInputFrag(){
+
+        val inputFragment = InputFragment()
+
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.mainLayout, inputFragment)
+            commit()
+        }
     }
 }
 
