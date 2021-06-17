@@ -11,8 +11,8 @@ import java.lang.StringBuilder
 
 class InputFragment : Fragment(R.layout.fragment_input){
 
-    var calories = ""
-    private var query= StringBuilder()
+    private var calories = ""
+    private var query = StringBuilder()
     private var listOfFood = ArrayList<String>()
     var listOfCalories = ArrayList<String>()
 
@@ -35,9 +35,14 @@ class InputFragment : Fragment(R.layout.fragment_input){
             listOfFood.add(etFood.text.toString())
             myAdapter.notifyDataSetChanged()
             etFood.text.clear()
+
+            for (i in listOfFood){
+                query.append("$i ")
+            }
         }
 
         btnClear.setOnClickListener {
+
             calories = ""
             query.clear()
             listOfFood.clear()
@@ -50,9 +55,6 @@ class InputFragment : Fragment(R.layout.fragment_input){
             progressBar.visibility = View.VISIBLE
             tvProcessing.visibility = View.VISIBLE
 
-            for (i in listOfFood){
-                query.append("$i ")
-            }
 
             val client = OkHttpClient()
             val url = "https://calorieninjas.p.rapidapi.com/v1/nutrition?query= $query"
@@ -77,10 +79,10 @@ class InputFragment : Fragment(R.layout.fragment_input){
                         val data = gson.fromJson(jsonResponse, Data::class.java)
 
                         for (element in data.items){
-                            if (!listOfCalories.contains(element.calories)){
-                                listOfCalories.add(element.calories)
-                            }
+                            listOfCalories.add(element.calories)
                         }
+                        query.clear()
+                        println(query)
                         communicator.passData(listOfCalories)
 
                     }

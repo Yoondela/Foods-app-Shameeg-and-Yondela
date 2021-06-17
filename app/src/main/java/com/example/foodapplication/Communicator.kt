@@ -2,6 +2,6 @@ package com.example.foodapplication
 
 interface Communicator {
 
-    fun passData(listOfFood:ArrayList<String>)
+    fun passData(listOfCalories:ArrayList<String>)
 
 }
