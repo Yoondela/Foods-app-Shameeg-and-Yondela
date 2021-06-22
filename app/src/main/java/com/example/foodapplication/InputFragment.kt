@@ -9,7 +9,7 @@ import okhttp3.*
 import java.io.IOException
 import java.lang.StringBuilder
 
-class InputFragment : Fragment(R.layout.fragment_input), Callback {
+class InputFragment : Fragment(), Callback {
 
     private var calories = 0.0
     private var query = StringBuilder()

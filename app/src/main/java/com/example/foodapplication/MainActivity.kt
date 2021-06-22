@@ -18,10 +18,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun setDefaultScreen() {
 
-        val loginFragment = LoginFragment()
+        val registerFragment = RegisterFragment()
 
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.mainLayout, loginFragment)
+            replace(R.id.mainLayout, registerFragment)
             commit()
         }
     }
