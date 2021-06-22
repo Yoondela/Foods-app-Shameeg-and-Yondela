@@ -17,31 +17,17 @@
             android:id="@+id/txtFood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="80dp"
             android:ems="10"
             android:hint="@string/Input_prompt"
+            android:inputType="textPersonName"
             android:textColor="@color/black"
             android:textColorHint="#9b9b9b"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/txtAmount"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/txtAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:ems="10"
-            android:hint="@string/Input_amount"
-            android:textColor="@color/black"
-            android:textColorHint="#9b9b9b"
-            android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/btnAdd"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtFood" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ListView
             android:id="@+id/list"
@@ -50,10 +36,10 @@
             android:background="@drawable/list_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnAdd"
-            app:layout_constraintVertical_bias="0.062" />
+            app:layout_constraintVertical_bias="0.219" />
 
         <android.widget.Button
             android:id="@+id/btnCont"
@@ -66,11 +52,11 @@
             android:background="@drawable/grey_background"
             android:hint="@string/SubmitButton"
             android:textColorHint="#9b9b9b"
-            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnClear"
-            app:layout_constraintVertical_bias="1.0"/>
+            app:layout_constraintVertical_bias="1.0" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -92,23 +78,26 @@
             android:id="@+id/btnClear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/grey_background"
             android:hint="@string/ClearAllBt"
             android:textColorHint="#9b9b9b"
-            android:background="@drawable/grey_background"
-            app:layout_constraintTop_toBottomOf="@+id/list"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list" />
 
         <android.widget.Button
             android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/grey_background"
             android:hint="@string/AddToListBt"
             android:textColorHint="#9b9b9b"
-            android:background="@drawable/grey_background"            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtAmount" />
+            app:layout_constraintTop_toBottomOf="@+id/txtFood" />
 
         <TextView
             android:id="@+id/process"

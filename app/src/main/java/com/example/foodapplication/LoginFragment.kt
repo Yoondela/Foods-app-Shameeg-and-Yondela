@@ -9,22 +9,5 @@ import android.widget.Button
 import android.widget.TextView
 
 class LoginFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        val communicator:Communicator = activity as Communicator
-        val root = inflater.inflate(R.layout.fragment_login, container, false)
-        val regbtn = root.findViewById<TextView>(R.id.txtReg)
-        val loginBtn = root.findViewById<Button>(R.id.loginBtn)
-
-        regbtn.setOnClickListener{
-            communicator.goToRegister()
-        }
-
-        loginBtn.setOnClickListener {
-            communicator.goToInputFrag()
-        }
-
-
-        return root
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_register, container, false)
 }
