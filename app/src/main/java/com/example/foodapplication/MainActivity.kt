@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.grey)))
+
         if (savedInstanceState == null) {
             setDefaultScreen()
         }

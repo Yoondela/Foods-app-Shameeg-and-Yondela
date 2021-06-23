@@ -47,26 +47,26 @@
         android:hint="Full name"
         android:textColorHint="#9b9b9b"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/email"
-        app:layout_constraintEnd_toEndOf="@+id/email"
-        app:layout_constraintStart_toStartOf="@+id/email" />
+        app:layout_constraintBottom_toTopOf="@+id/registerEmail"
+        app:layout_constraintEnd_toEndOf="@+id/registerEmail"
+        app:layout_constraintStart_toStartOf="@+id/registerEmail" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/registerEmail"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Email"
         android:textColorHint="#9b9b9b"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/password"
+        app:layout_constraintEnd_toEndOf="@+id/registerPassword"
         app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintStart_toStartOf="@+id/registerPassword"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.469" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/registerPassword"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Password"
@@ -76,7 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email"
+        app:layout_constraintTop_toBottomOf="@+id/registerEmail"
         app:layout_constraintVertical_bias="0.003" />
 
     <android.widget.Button
@@ -88,10 +88,10 @@
         android:hint="REGISTER"
         android:textColor="#9b9b9b"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/password"
+        app:layout_constraintEnd_toEndOf="@+id/registerPassword"
         app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintStart_toStartOf="@+id/registerPassword"
+        app:layout_constraintTop_toBottomOf="@+id/registerPassword"
         app:layout_constraintVertical_bias="0.022" />
 
 

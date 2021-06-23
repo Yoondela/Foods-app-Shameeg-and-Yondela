@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 
 class LoginFragment : Fragment() {
 
@@ -22,6 +24,8 @@ class LoginFragment : Fragment() {
         val root = requireView()
         val textRegister = root.findViewById<TextView>(R.id.txtReg)
         val loginBtn = root.findViewById<Button>(R.id.loginBtn)
+        val email = root.findViewById<EditText>(R.id.loginEmail)
+        val password = root.findViewById<EditText>(R.id.loginPassword)
         val registerFragment = RegisterFragment()
         val inputFragment = InputFragment()
 
@@ -32,10 +36,12 @@ class LoginFragment : Fragment() {
         }
 
         loginBtn.setOnClickListener{
+
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
             transaction.replace(R.id.mainLayout, inputFragment)
             transaction.addToBackStack(null)
             transaction.commit()
+
         }
     }
 }
