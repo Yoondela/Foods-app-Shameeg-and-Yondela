@@ -24,6 +24,7 @@ class LoginFragment : Fragment() {
         val root = requireView()
         val textRegister = root.findViewById<TextView>(R.id.txtReg)
         val loginBtn = root.findViewById<Button>(R.id.loginBtn)
+        val username = arguments?.getString("name")
         val email = root.findViewById<EditText>(R.id.loginEmail)
         val password = root.findViewById<EditText>(R.id.loginPassword)
         val registerFragment = RegisterFragment()
@@ -37,11 +38,17 @@ class LoginFragment : Fragment() {
 
         loginBtn.setOnClickListener{
 
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.mainLayout, inputFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-
+            val dbHandler = DatabaseHandler(requireContext())
+            val user = User(username.toString(), email.text.toString(), password.text.toString())
+            if(dbHandler.checkUserDetails(user)){
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.mainLayout, inputFragment)
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
+            else{
+                Toast.makeText(requireContext(),"incorrect details", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
