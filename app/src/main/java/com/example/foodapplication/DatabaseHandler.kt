@@ -46,4 +46,23 @@ class DatabaseHandler(var context: Context):SQLiteOpenHelper(context, DATABASE_N
         }
         db.close()
     }
+
+    fun checkUserDetails(user:User):Boolean{
+
+        val db = readableDatabase
+        val query = "Select * from " + TABLE_NAME
+        val cursor = db.rawQuery(query, null, null)
+
+        while(cursor.moveToNext()){
+            var email = cursor.getString(cursor.getColumnIndex(COL_EMAIL))
+            var password = cursor.getString(cursor.getColumnIndex(COL_PASSWORD))
+            if(email == user.email && password == user.password){
+                Toast.makeText(context, "Successfully logged in", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        }
+        cursor.close()
+        db.close()
+        return false
+    }
 }
