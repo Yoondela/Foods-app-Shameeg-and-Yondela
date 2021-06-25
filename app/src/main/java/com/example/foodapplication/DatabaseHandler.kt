@@ -19,7 +19,7 @@ class DatabaseHandler(var context: Context):SQLiteOpenHelper(context, DATABASE_N
 
         val createTable = "CREATE TABLE " + TABLE_NAME +" (" +
                 COL_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," +
-                COL_NAME +" VARCHAR(200)," +
+                COL_NAME +" VARCHAR(20)," +
                 COL_EMAIL +" VARCHAR(200),"+
                 COL_PASSWORD +" VARCHAR(20))"
 
@@ -31,6 +31,7 @@ class DatabaseHandler(var context: Context):SQLiteOpenHelper(context, DATABASE_N
     }
 
     fun storeUserDetails(user:User){
+
         val db = writableDatabase
         val values = ContentValues()
         values.put(COL_NAME, user.name)
