@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.textfield.TextInputLayout
 
 class RegisterFragment : Fragment() {
 
@@ -16,56 +17,102 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        gotoLogin()
+        onClickRegister()
     }
 
-    private fun gotoLogin(){
+    private fun onClickRegister(){
 
         val root = requireView()
         val textLogin = root.findViewById<TextView>(R.id.txtLogin)
         val btnRegister = root.findViewById<Button>(R.id.registerBtn)
-        val name = root.findViewById<EditText>(R.id.fullName)
-        val email = root.findViewById<EditText>(R.id.registerEmail)
-        val password = root.findViewById<EditText>(R.id.registerPassword)
-
-        val loginFragment = LoginFragment()
 
         btnRegister.setOnClickListener {
-
-            if (name.text.toString().isNotEmpty()&&
-                    email.text.toString().isNotEmpty()&&
-                    password.text.toString().isNotEmpty()
-            ){
-                val user =
-                    User(name.text.toString(), email.text.toString(), password.text.toString())
-                var dbHandler = DatabaseHandler(requireContext())
-                dbHandler.storeUserDetails(user)
-                sendUserNameToLogin(user)
-                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.mainLayout, loginFragment)
-                transaction.addToBackStack(null)
-                transaction.commit()
-            }
-            else{
-                Toast.makeText(requireContext(),"please fill in all fields",Toast.LENGTH_SHORT).show()
-            }
+            confirmInputAndGotoLogin()
         }
 
         textLogin.setOnClickListener{
-
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.mainLayout, loginFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            gotoLogin()
         }
     }
 
-    private fun sendUserNameToLogin(user:User){
+    private fun validateUsername():Boolean{
 
-        val bundle = Bundle()
-        val loginFrag = LoginFragment()
+        val root = requireView()
 
-        bundle.putString("name",user.name)
-        loginFrag.arguments = bundle
+        val name = root.findViewById<TextInputLayout>(R.id.registerUsername)
+        val username = name.editText?.text.toString().trim()
+
+        return when {
+            username.isEmpty() -> {
+                name.error = "Field cannot be empty"
+                false
+            }
+            username.length > 20 -> {
+                name.error = "Username cannot exceed 20 characters"
+                false
+            }
+            else -> {
+                name.error = null
+                true
+            }
+        }
+    }
+
+    private fun validateEmail():Boolean{
+        val root = requireView()
+
+        val textInputEmail = root.findViewById<TextInputLayout>(R.id.registerEmail)
+        val email = textInputEmail.editText?.text.toString().trim()
+
+        return if(email.isEmpty()){
+            textInputEmail.error = "Field cannot be empty"
+            false
+        } else{
+            textInputEmail.error = null
+            true
+        }
+    }
+
+    private fun validatePassword():Boolean{
+        val root = requireView()
+
+        val textInputPassword = root.findViewById<TextInputLayout>(R.id.registerPassword)
+        val password = textInputPassword.editText?.text.toString().trim()
+
+        return if(password.isEmpty()){
+            textInputPassword.error = "Field cannot be empty"
+            false
+        } else{
+            textInputPassword.error = null
+            true
+        }
+    }
+
+    private fun confirmInputAndGotoLogin() {
+
+        val root = requireView()
+        val name = root.findViewById<TextInputLayout>(R.id.registerUsername)
+        val email = root.findViewById<TextInputLayout>(R.id.registerEmail)
+        val password = root.findViewById<TextInputLayout>(R.id.registerPassword)
+
+        if (!validateEmail() or !validateUsername() or !validatePassword()) {
+            return
+        } else{
+            val user =
+                User(name.editText?.text.toString(), email.editText?.text.toString(), password.editText?.text.toString())
+            var dbHandler = DatabaseHandler(requireContext())
+            dbHandler.storeUserDetails(user)
+            gotoLogin()
+        }
+    }
+
+    private fun gotoLogin(){
+
+        val loginFragment = LoginFragment()
+
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.mainLayout, loginFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }
