@@ -1,17 +1,28 @@
 package com.example.foodapplication
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Patterns.EMAIL_ADDRESS
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
+import java.util.*
+import java.util.regex.Pattern
+val PASSWORD_PATTERN: Pattern = Pattern.compile("^" +
+        "(?=.*[0-9])" +
+        "(?=.*[a-z])" +
+        "(?=.*[A-Z])" +
+        ".{5,}" +
+        "$")
 
 class RegisterFragment : Fragment() {
+
+    private val random = Random()
+    private val OTP = random.nextInt(8999)+1000
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_register, container, false)
 
@@ -27,7 +38,10 @@ class RegisterFragment : Fragment() {
         val btnRegister = root.findViewById<Button>(R.id.registerBtn)
 
         btnRegister.setOnClickListener {
-            confirmInputAndGotoLogin()
+
+            val user = User(OTP.toString())
+            confirmInputAndStoreUserDetailsInDB()
+            sendOTP(user)
         }
 
         textLogin.setOnClickListener{
@@ -67,7 +81,10 @@ class RegisterFragment : Fragment() {
         return if(email.isEmpty()){
             textInputEmail.error = "Field cannot be empty"
             false
-        } else{
+        } else if(!EMAIL_ADDRESS.matcher(email).matches()){
+            textInputEmail.error = "Email is not in the correct format"
+            false
+        }else{
             textInputEmail.error = null
             true
         }
@@ -82,13 +99,16 @@ class RegisterFragment : Fragment() {
         return if(password.isEmpty()){
             textInputPassword.error = "Field cannot be empty"
             false
-        } else{
+        } else if(!PASSWORD_PATTERN.matcher(password).matches()){
+            textInputPassword.error = "Password is too weak"
+            false
+        }else{
             textInputPassword.error = null
             true
         }
     }
 
-    private fun confirmInputAndGotoLogin() {
+    private fun confirmInputAndStoreUserDetailsInDB() {
 
         val root = requireView()
         val name = root.findViewById<TextInputLayout>(R.id.registerUsername)
@@ -99,10 +119,9 @@ class RegisterFragment : Fragment() {
             return
         } else{
             val user =
-                User(name.editText?.text.toString(), email.editText?.text.toString(), password.editText?.text.toString())
-            var dbHandler = DatabaseHandler(requireContext())
+                User(name.editText?.text.toString(), email.editText?.text.toString(), password.editText?.text.toString(),OTP.toString())
+            val dbHandler = DatabaseHandler(requireContext())
             dbHandler.storeUserDetails(user)
-            gotoLogin()
         }
     }
 
@@ -112,6 +131,39 @@ class RegisterFragment : Fragment() {
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.mainLayout, loginFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    private fun sendOTP(user:User){
+
+        val root = requireView()
+        val email = root.findViewById<TextInputLayout>(R.id.registerEmail)
+
+        val sender = Thread {
+            try {
+                val sender = OTPSender("syfoodapp@gmail.com", "SSYS400D")
+                sender.sendMail(
+                    "OTP",
+                    "Your OTP is: ${user.OTP}",
+                    "syfoodapp@gmail.com",
+                    email.editText?.text.toString().trim()
+                )
+                gotoOTPScreen()
+            } catch (e: Exception) {
+                println("failed")
+                Toast.makeText(requireContext(),"Invalid email address",Toast.LENGTH_SHORT).show()
+            }
+        }
+        sender.start()
+    }
+
+    private fun gotoOTPScreen(){
+
+        val otpFragment = OtpFragment()
+
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.mainLayout, otpFragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }

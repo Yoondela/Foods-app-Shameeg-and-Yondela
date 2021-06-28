@@ -6,64 +6,78 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.widget.Toast
 
-val DATABASE_NAME = "MyDB"
-val TABLE_NAME = "Users"
-val COL_NAME = "name"
-val COL_EMAIL = "email"
-val COL_PASSWORD = "password"
-val COL_ID = "id"
+const val DATABASE_NAME = "MyDB"
+const val TABLE_NAME = "Users"
+const val COL_NAME = "name"
+const val COL_EMAIL = "email"
+const val COL_PASSWORD = "password"
+const val COL_ID = "id"
+const val COL_OTP = "OTP"
 
-class DatabaseHandler(var context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
+class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 2) {
 
     override fun onCreate(db: SQLiteDatabase?) {
-
         val createTable = "CREATE TABLE " + TABLE_NAME +" (" +
                 COL_ID +" INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COL_NAME +" VARCHAR(20)," +
                 COL_EMAIL +" VARCHAR(200),"+
-                COL_PASSWORD +" VARCHAR(20))"
+                COL_PASSWORD +" VARCHAR(20),"+
+                COL_OTP +" VARCHAR(4))"
 
         db?.execSQL(createTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
+        db?.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME)
+        onCreate(db)
     }
 
     fun storeUserDetails(user:User){
 
         val db = writableDatabase
         val values = ContentValues()
+        values.put(COL_OTP,user.OTP)
         values.put(COL_NAME, user.name)
         values.put(COL_EMAIL,user.email)
         values.put(COL_PASSWORD,user.password)
 
-        var result = db.insert(TABLE_NAME, null, values)
-        if (result == (-1).toLong()){
-            Toast.makeText(context,"failed", Toast.LENGTH_SHORT).show()
-        }
-        else{
-            Toast.makeText(context,"success", Toast.LENGTH_SHORT).show()
-        }
+        db.insert(TABLE_NAME, null, values)
         db.close()
     }
 
     fun checkUserDetails(user:User):Boolean{
 
         val db = readableDatabase
-        val query = "Select * from " + TABLE_NAME
+        val query = "Select * from $TABLE_NAME"
         val cursor = db.rawQuery(query, null, null)
 
         while(cursor.moveToNext()){
-            var email = cursor.getString(cursor.getColumnIndex(COL_EMAIL))
-            var password = cursor.getString(cursor.getColumnIndex(COL_PASSWORD))
+            val email = cursor.getString(cursor.getColumnIndex(COL_EMAIL))
+            val password = cursor.getString(cursor.getColumnIndex(COL_PASSWORD))
             if(email == user.email && password == user.password){
-                Toast.makeText(context, "Successfully logged in", Toast.LENGTH_SHORT).show()
                 return true
             }
         }
         cursor.close()
         db.close()
         return false
+    }
+
+    fun checkOTP(user:User):Boolean{
+
+        val db = readableDatabase
+        val query = "Select * from $TABLE_NAME"
+        val cursor = db.rawQuery(query, null, null)
+        while(cursor.moveToNext()){
+            val OTP = cursor.getString(cursor.getColumnIndex(COL_OTP))
+            if(OTP == user.OTP){
+                Toast.makeText(context, "OTP is correct", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        }
+        cursor.close()
+        db.close()
+        return false
+
     }
 }
