@@ -1,6 +1,7 @@
 package com.example.foodapplication
 
 import android.os.Bundle
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +42,9 @@ class LoginFragment : Fragment() {
 
         return if(email.isEmpty()){
             textInputEmail.error = "Field cannot be empty"
+            false
+        } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            textInputEmail.error = "Email is not in the correct format"
             false
         } else{
             textInputEmail.error = null
