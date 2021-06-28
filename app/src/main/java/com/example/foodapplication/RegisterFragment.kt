@@ -41,7 +41,6 @@ class RegisterFragment : Fragment() {
 
             val user = User(OTP.toString())
             confirmInputAndStoreUserDetailsInDB()
-            sendOTP(user)
         }
 
         textLogin.setOnClickListener{
@@ -122,6 +121,7 @@ class RegisterFragment : Fragment() {
                 User(name.editText?.text.toString(), email.editText?.text.toString(), password.editText?.text.toString(),OTP.toString())
             val dbHandler = DatabaseHandler(requireContext())
             dbHandler.storeUserDetails(user)
+            sendOTP(user)
         }
     }
 

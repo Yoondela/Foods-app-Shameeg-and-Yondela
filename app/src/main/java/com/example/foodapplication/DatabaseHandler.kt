@@ -14,7 +14,7 @@ const val COL_PASSWORD = "password"
 const val COL_ID = "id"
 const val COL_OTP = "OTP"
 
-class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 2) {
+class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 3) {
 
     override fun onCreate(db: SQLiteDatabase?) {
         val createTable = "CREATE TABLE " + TABLE_NAME +" (" +
@@ -28,7 +28,7 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME)
+        db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
     }
 
