@@ -1,5 +1,7 @@
 package com.example.foodapplication
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.*
@@ -10,6 +12,8 @@ import java.io.IOException
 import java.lang.StringBuilder
 
 class InputFragment : Fragment(), Callback {
+
+    lateinit var preferences: SharedPreferences
 
     private var calories = 0.0
     private var query = StringBuilder()
@@ -28,6 +32,9 @@ class InputFragment : Fragment(), Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onClickAllButtons()
+
+        preferences = requireActivity().getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
+
     }
 
     private fun makeNetworkCall() {
@@ -78,6 +85,7 @@ class InputFragment : Fragment(), Callback {
     private fun onClickAllButtons() {
 
         val root = requireView()
+        var btnLogout = root.findViewById<Button>(R.id.logoutBTN)
         val etFood: EditText = root.findViewById(R.id.txtFood)
         val btnAdd: Button = root.findViewById(R.id.btnAdd)
         val btnClear: Button = root.findViewById(R.id.btnClear)
@@ -87,6 +95,15 @@ class InputFragment : Fragment(), Callback {
         val list: ListView = root.findViewById(R.id.list)
         val myAdapter = ArrayAdapter(requireActivity(), R.layout.black_text_list, listOfFood)
         list.adapter = myAdapter
+
+        btnLogout.setOnClickListener {
+            val editor: SharedPreferences.Editor = preferences.edit()
+            editor.clear()
+            editor.apply()
+            val loginFragment = LoginFragment()
+            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, loginFragment).commit()
+
+        }
 
         btnAdd.setOnClickListener {
 

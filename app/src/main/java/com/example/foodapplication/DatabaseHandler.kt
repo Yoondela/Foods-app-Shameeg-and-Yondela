@@ -1,4 +1,4 @@
-package com.example.foodapplication
+ import com.example.foodapplication.User
 
 import android.content.ContentValues
 import android.content.Context
@@ -48,7 +48,7 @@ class DatabaseHandler(var context: Context):SQLiteOpenHelper(context, DATABASE_N
         db.close()
     }
 
-    fun checkUserDetails(user:User):Boolean{
+    fun checkUserDetails(user: User):Boolean{
 
         val db = readableDatabase
         val query = "Select * from " + TABLE_NAME
