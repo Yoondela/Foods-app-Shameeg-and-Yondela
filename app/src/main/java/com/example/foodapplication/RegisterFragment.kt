@@ -1,5 +1,6 @@
 package com.example.foodapplication
 
+import DatabaseHandler
 import android.os.Bundle
 import android.util.Patterns.EMAIL_ADDRESS
 import android.view.LayoutInflater

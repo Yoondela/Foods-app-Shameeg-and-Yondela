@@ -1,5 +1,8 @@
 package com.example.foodapplication
 
+import DatabaseHandler
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Patterns
 import androidx.fragment.app.Fragment
@@ -7,17 +10,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment() {
 
+    lateinit var sharedPreferences: SharedPreferences
+    var isRemembered = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_login, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onClickLogin()
+
+        sharedPreferences = requireActivity().getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
+        isRemembered = sharedPreferences.getBoolean("CHECKBOX", false)
+        if (isRemembered){
+            gotoInputFrag()
+        }
     }
 
     private fun onClickLogin(){
@@ -25,12 +38,18 @@ class LoginFragment : Fragment() {
         val root = requireView()
         val textRegister = root.findViewById<TextView>(R.id.txtReg)
         val loginBtn = root.findViewById<Button>(R.id.loginBtn)
+        val cbRememberMe = root.findViewById<CheckBox>(R.id.rememberMeCB)
 
         textRegister.setOnClickListener{
             gotoRegistration()
         }
 
         loginBtn.setOnClickListener{
+
+            val checked: Boolean = cbRememberMe.isChecked
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putBoolean("CHECKBOX", checked)
+            editor.apply()
             confirmInputAndGotoFoodInputScreen()
         }
     }
