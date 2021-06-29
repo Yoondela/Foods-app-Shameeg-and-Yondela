@@ -4,6 +4,8 @@ import DatabaseHandler
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,8 +16,9 @@ import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
+import org.w3c.dom.Text
 
-class LoginFragment : Fragment() {
+class LoginFragment : Fragment(),TextWatcher {
 
     lateinit var sharedPreferences: SharedPreferences
     var isRemembered = false
@@ -24,6 +27,16 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val root = requireView()
+        val textInputEmail = root.findViewById<TextInputLayout>(R.id.loginEmail)
+        val textInputPassword = root.findViewById<TextInputLayout>(R.id.loginPassword)
+        val email = textInputEmail.editText
+        val password = textInputPassword.editText
+
+        email?.addTextChangedListener(this)
+        password?.addTextChangedListener(this)
+
         onClickLogin()
 
         sharedPreferences = requireActivity().getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
@@ -125,5 +138,35 @@ class LoginFragment : Fragment() {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.mainLayout, registerFragment)
         transaction.commit()
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        checkIfTextHasChanged()
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+    }
+
+    private fun checkIfTextHasChanged(){
+
+        val root = requireView()
+        val textInputEmail = root.findViewById<TextInputLayout>(R.id.loginEmail)
+        val textInputPassword = root.findViewById<TextInputLayout>(R.id.loginPassword)
+        val email = textInputEmail.editText?.text.toString().trim()
+        val password = textInputPassword.editText?.text.toString().trim()
+
+        if(textInputEmail.error == "Field cannot be empty" && email.isNotEmpty()){
+            textInputEmail.error = null
+        }
+        else if(textInputEmail.error == "Email is not in the correct format" && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            textInputEmail.error = null
+        }
+        else if(textInputPassword.error == "Field cannot be empty" && password.isNotEmpty()){
+            textInputPassword.error = null
+        }
     }
 }

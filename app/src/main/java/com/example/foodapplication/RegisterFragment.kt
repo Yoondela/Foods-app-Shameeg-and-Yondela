@@ -2,17 +2,21 @@ package com.example.foodapplication
 
 import DatabaseHandler
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Patterns.EMAIL_ADDRESS
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 import java.util.regex.Pattern
+
 val PASSWORD_PATTERN: Pattern = Pattern.compile("^" +
         "(?=.*[0-9])" +
         "(?=.*[a-z])" +
@@ -20,7 +24,7 @@ val PASSWORD_PATTERN: Pattern = Pattern.compile("^" +
         ".{5,}" +
         "$")
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : Fragment(),TextWatcher {
 
     private val random = Random()
     private val OTP = random.nextInt(8999)+1000
@@ -29,6 +33,19 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val root = requireView()
+        val textInputEmail = root.findViewById<TextInputLayout>(R.id.registerEmail)
+        val email = textInputEmail.editText
+        val textInputUsername = root.findViewById<TextInputLayout>(R.id.registerUsername)
+        val username = textInputUsername.editText
+        val textInputPassword = root.findViewById<TextInputLayout>(R.id.registerPassword)
+        val password = textInputPassword.editText
+
+        email?.addTextChangedListener(this)
+        username?.addTextChangedListener(this)
+        password?.addTextChangedListener(this)
+
         onClickRegister()
     }
 
@@ -39,8 +56,6 @@ class RegisterFragment : Fragment() {
         val btnRegister = root.findViewById<Button>(R.id.registerBtn)
 
         btnRegister.setOnClickListener {
-
-            val user = User(OTP.toString())
             confirmInputAndStoreUserDetailsInDB()
         }
 
@@ -167,5 +182,43 @@ class RegisterFragment : Fragment() {
         transaction.replace(R.id.mainLayout, otpFragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        checkIfTextHasChanged()
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+    }
+
+    private fun checkIfTextHasChanged(){
+        val root = requireView()
+        val textInputEmail = root.findViewById<TextInputLayout>(R.id.registerEmail)
+        val email = textInputEmail.editText?.text.toString().trim()
+        val name = root.findViewById<TextInputLayout>(R.id.registerUsername)
+        val username = name.editText?.text.toString().trim()
+        val textInputPassword = root.findViewById<TextInputLayout>(R.id.registerPassword)
+        val password = textInputPassword.editText?.text.toString().trim()
+
+        if(textInputEmail.error == "Field cannot be empty" && email.isNotEmpty()){
+            textInputEmail.error = null
+        }
+        else if(textInputEmail.error == "Email is not in the correct format" && EMAIL_ADDRESS.matcher(email).matches()){
+            textInputEmail.error = null
+        }
+
+        if(name.error == "Field cannot be empty" && username.isNotEmpty()){
+            name.error = null
+        }
+
+        if(textInputPassword.error == "Field cannot be empty" && password.isNotEmpty()){
+            textInputPassword.error = null
+        }
+        else if(textInputPassword.error == "Password is too weak" && PASSWORD_PATTERN.matcher(password).matches()){
+            textInputPassword.error = null
+        }
     }
 }
