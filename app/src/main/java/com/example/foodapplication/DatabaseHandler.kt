@@ -113,7 +113,7 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
         db.close()
     }
 
-    fun userExists(user:User):Boolean{
+    private fun userExists(user:User):Boolean{
 
         val db = readableDatabase
         val query = "Select * from $TABLE_NAME where $COL_EMAIL= \'"+user.email+"\'"
