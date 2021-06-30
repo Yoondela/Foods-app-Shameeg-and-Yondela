@@ -42,18 +42,13 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
         values.put(COL_EMAIL, user.email)
         values.put(COL_PASSWORD, user.password)
 
-        val query = "Select * from $TABLE_NAME where $COL_EMAIL= \'"+user.email+"\'"
-        val cursor = db.rawQuery(query,null,null)
-
-        return if(cursor.moveToFirst()){
+        return if(userExists(user)){
             Toast.makeText(context, "This account already exists", Toast.LENGTH_SHORT).show()
             false
         } else{
             db.insert(TABLE_NAME, null, values)
             true
         }
-
-        cursor.close()
         db.close()
         return true
     }
@@ -91,6 +86,39 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
         cursor.close()
         db.close()
         return false
+    }
 
+    fun resetPassword(user:User):Boolean{
+
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put(COL_PASSWORD,user.password)
+        val cursor = db.rawQuery("Select * from $TABLE_NAME",null,null)
+        if (cursor.moveToNext()){
+            val password = cursor.getString(cursor.getColumnIndex(COL_PASSWORD))
+            return if (userExists(user) && password != user.password) {
+                db.update(TABLE_NAME, values, "$COL_EMAIL=?", arrayOf(user.email))
+                Toast.makeText(context, "Password successfully updated", Toast.LENGTH_SHORT).show()
+                true
+            }else if(password == user.password){
+                Toast.makeText(context, "New password cannot be the same as old password", Toast.LENGTH_SHORT).show()
+                false
+            }
+            else {
+                Toast.makeText(context, "This account does not exist", Toast.LENGTH_SHORT).show()
+                false
+            }
+        }
+        return false
+        db.close()
+    }
+
+    fun userExists(user:User):Boolean{
+
+        val db = readableDatabase
+        val query = "Select * from $TABLE_NAME where $COL_EMAIL= \'"+user.email+"\'"
+        val cursor = db.rawQuery(query,null,null)
+
+        return cursor.moveToFirst()
     }
 }

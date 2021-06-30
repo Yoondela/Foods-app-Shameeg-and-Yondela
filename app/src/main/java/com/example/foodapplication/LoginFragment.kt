@@ -52,6 +52,7 @@ class LoginFragment : Fragment(),TextWatcher {
         val textRegister = root.findViewById<TextView>(R.id.txtReg)
         val loginBtn = root.findViewById<Button>(R.id.loginBtn)
         val cbRememberMe = root.findViewById<CheckBox>(R.id.rememberMeCB)
+        val forgotPassword = root.findViewById<TextView>(R.id.forgotPassword)
 
         textRegister.setOnClickListener{
             gotoRegistration()
@@ -64,6 +65,10 @@ class LoginFragment : Fragment(),TextWatcher {
             editor.putBoolean("CHECKBOX", checked)
             editor.apply()
             confirmInputAndGotoFoodInputScreen()
+        }
+
+        forgotPassword.setOnClickListener{
+            gotoResetPasswordFragment()
         }
     }
 
@@ -137,6 +142,15 @@ class LoginFragment : Fragment(),TextWatcher {
         val registerFragment = RegisterFragment()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.mainLayout, registerFragment)
+        transaction.commit()
+    }
+
+    private fun gotoResetPasswordFragment(){
+
+        val resetPasswordFragment = ResetPasswordFragment()
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.mainLayout, resetPasswordFragment)
+        transaction.addToBackStack(null)
         transaction.commit()
     }
 
