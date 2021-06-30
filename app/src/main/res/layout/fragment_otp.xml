@@ -4,42 +4,93 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/grey_background"
+    android:padding="5dp"
     tools:context=".OtpFragment">
 
-    <EditText
-        android:id="@+id/etOTP"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:hint="OTP"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <EditText
+        android:id="@+id/etOTP3"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/etOTP4"
+        app:layout_constraintEnd_toStartOf="@+id/etOTP4"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:maxLength="1"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textColor="#9b9b9b"
+        app:layout_constraintStart_toEndOf="@+id/etOTP2"
+        app:layout_constraintTop_toTopOf="@+id/etOTP4" />
+
+    <EditText
+        android:id="@+id/etOTP2"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/etOTP4"
+        app:layout_constraintEnd_toStartOf="@+id/etOTP3"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:maxLength="1"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textColor="#9b9b9b"
+        app:layout_constraintStart_toEndOf="@+id/etOTP1"
+        app:layout_constraintTop_toTopOf="@+id/etOTP3"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/etOTP1"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/etOTP4"
+        app:layout_constraintEnd_toStartOf="@+id/etOTP2"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:maxLength="1"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textColor="#9b9b9b"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/etOTP2"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/etOTP4"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/submitOTP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:maxLength="1"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textColor="#9b9b9b"
+        app:layout_constraintStart_toEndOf="@+id/etOTP3"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <android.widget.Button
         android:id="@+id/submitOTP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="submit"
+        android:layout_marginBottom="204dp"
+        android:hint="Confirm"
+        android:background="#9b9b9b"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etOTP"
-        app:layout_constraintVertical_bias="0.082" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter your OTP below. \n If you didn't get an OTP please check you entered the correct email address"
-        android:textColor="@color/black"
+        android:layout_marginTop="184dp"
         android:gravity="center_horizontal"
+        android:text="Enter your OTP below."
         android:textAlignment="center"
+        android:textColor="#c0c0c0"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/etOTP"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
