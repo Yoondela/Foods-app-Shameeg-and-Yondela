@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.*
+import androidx.annotation.Nullable
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
@@ -28,6 +29,23 @@ class InputFragment : Fragment(), Callback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_input, container, false)
+
+    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.for_menu_file, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.logoutMenuItem -> executeLogout()
+        }
+                return super.onOptionsItemSelected(item)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -85,7 +103,6 @@ class InputFragment : Fragment(), Callback {
     private fun onClickAllButtons() {
 
         val root = requireView()
-        var btnLogout = root.findViewById<Button>(R.id.logoutBTN)
         val etFood: EditText = root.findViewById(R.id.txtFood)
         val btnAdd: Button = root.findViewById(R.id.btnAdd)
         val btnClear: Button = root.findViewById(R.id.btnClear)
@@ -95,15 +112,6 @@ class InputFragment : Fragment(), Callback {
         val list: ListView = root.findViewById(R.id.list)
         val myAdapter = ArrayAdapter(requireActivity(), R.layout.black_text_list, listOfFood)
         list.adapter = myAdapter
-
-        btnLogout.setOnClickListener {
-            val editor: SharedPreferences.Editor = preferences.edit()
-            editor.clear()
-            editor.apply()
-            val loginFragment = LoginFragment()
-            requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, loginFragment).commit()
-
-        }
 
         btnAdd.setOnClickListener {
 
@@ -128,5 +136,14 @@ class InputFragment : Fragment(), Callback {
             tvProcessing.visibility = View.VISIBLE
             makeNetworkCall()
         }
+    }
+
+    fun executeLogout(){
+        val editor: SharedPreferences.Editor = preferences.edit()
+        editor.clear()
+        editor.apply()
+        val loginFragment = LoginFragment()
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, loginFragment).commit()
+        Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_LONG).show()
     }
 }
