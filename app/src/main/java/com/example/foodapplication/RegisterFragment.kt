@@ -136,8 +136,12 @@ class RegisterFragment : Fragment(),TextWatcher {
             val user =
                 User(name.editText?.text.toString(), email.editText?.text.toString(), password.editText?.text.toString(),OTP.toString())
             val dbHandler = DatabaseHandler(requireContext())
-            dbHandler.storeUserDetails(user)
-            sendOTP(user)
+            if(dbHandler.storeUserDetails(user)){
+                sendOTP(user)
+            }
+            else{
+                println("Don't send OTP")
+            }
         }
     }
 
@@ -210,11 +214,11 @@ class RegisterFragment : Fragment(),TextWatcher {
             textInputEmail.error = null
         }
 
-        if(name.error == "Field cannot be empty" && username.isNotEmpty()){
+        else if(name.error == "Field cannot be empty" && username.isNotEmpty()){
             name.error = null
         }
 
-        if(textInputPassword.error == "Field cannot be empty" && password.isNotEmpty()){
+        else if(textInputPassword.error == "Field cannot be empty" && password.isNotEmpty()){
             textInputPassword.error = null
         }
         else if(textInputPassword.error == "Password is too weak" && PASSWORD_PATTERN.matcher(password).matches()){

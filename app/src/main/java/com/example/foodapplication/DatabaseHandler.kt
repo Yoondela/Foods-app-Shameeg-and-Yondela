@@ -1,4 +1,4 @@
- import com.example.foodapplication.User
+import com.example.foodapplication.User
 
 import android.content.ContentValues
 import android.content.Context
@@ -14,7 +14,7 @@ const val COL_PASSWORD = "password"
 const val COL_ID = "id"
 const val COL_OTP = "OTP"
 
-class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 3) {
+class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 4) {
 
     override fun onCreate(db: SQLiteDatabase?) {
         val createTable = "CREATE TABLE " + TABLE_NAME +" (" +
@@ -32,17 +32,30 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
         onCreate(db)
     }
 
-    fun storeUserDetails(user:User){
+    fun storeUserDetails(user:User):Boolean{
 
         val db = writableDatabase
         val values = ContentValues()
-        values.put(COL_OTP,user.OTP)
-        values.put(COL_NAME, user.name)
-        values.put(COL_EMAIL,user.email)
-        values.put(COL_PASSWORD,user.password)
 
-        db.insert(TABLE_NAME, null, values)
+        values.put(COL_OTP, user.OTP)
+        values.put(COL_NAME, user.name)
+        values.put(COL_EMAIL, user.email)
+        values.put(COL_PASSWORD, user.password)
+
+        val query = "Select * from $TABLE_NAME where $COL_EMAIL= \'"+user.email+"\'"
+        val cursor = db.rawQuery(query,null,null)
+
+        return if(cursor.moveToFirst()){
+            Toast.makeText(context, "This account already exists", Toast.LENGTH_SHORT).show()
+            false
+        } else{
+            db.insert(TABLE_NAME, null, values)
+            true
+        }
+
+        cursor.close()
         db.close()
+        return true
     }
 
     fun checkUserDetails(user: User):Boolean{
