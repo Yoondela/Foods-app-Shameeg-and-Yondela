@@ -5,6 +5,7 @@
     android:id="@+id/regFrag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/grey_background"
     android:padding="5dp"
     tools:context=".RegisterFragment">
 
@@ -12,7 +13,7 @@
         android:id="@+id/view"
         android:layout_width="205dp"
         android:layout_height="400dp"
-        android:background="@drawable/grey_background"
+        android:background="#c0c0c0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
