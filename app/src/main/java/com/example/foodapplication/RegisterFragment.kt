@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -151,7 +150,6 @@ class RegisterFragment : Fragment(),TextWatcher {
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.mainLayout, loginFragment)
-        transaction.addToBackStack(null)
         transaction.commit()
     }
 
