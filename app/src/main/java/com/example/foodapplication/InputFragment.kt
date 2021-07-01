@@ -138,7 +138,7 @@ class InputFragment : Fragment(), Callback {
         }
     }
 
-    fun executeLogout(){
+    private fun executeLogout(){
         val editor: SharedPreferences.Editor = preferences.edit()
         editor.clear()
         editor.apply()

@@ -51,7 +51,6 @@ class LoginFragment : Fragment(),TextWatcher {
         val root = requireView()
         val textRegister = root.findViewById<TextView>(R.id.txtReg)
         val loginBtn = root.findViewById<Button>(R.id.loginBtn)
-        val cbRememberMe = root.findViewById<CheckBox>(R.id.rememberMeCB)
         val forgotPassword = root.findViewById<TextView>(R.id.forgotPassword)
 
         textRegister.setOnClickListener{
@@ -59,11 +58,6 @@ class LoginFragment : Fragment(),TextWatcher {
         }
 
         loginBtn.setOnClickListener{
-
-            val checked: Boolean = cbRememberMe.isChecked
-            val editor: SharedPreferences.Editor = sharedPreferences.edit()
-            editor.putBoolean("CHECKBOX", checked)
-            editor.apply()
             confirmInputAndGotoFoodInputScreen()
         }
 
@@ -107,6 +101,7 @@ class LoginFragment : Fragment(),TextWatcher {
     private fun confirmInputAndGotoFoodInputScreen(){
 
         val root = requireView()
+        val cbRememberMe = root.findViewById<CheckBox>(R.id.rememberMeCB)
         val textInputEmail = root.findViewById<TextInputLayout>(R.id.loginEmail)
         val textInputPassword = root.findViewById<TextInputLayout>(R.id.loginPassword)
         val email = textInputEmail.editText?.text.toString().trim()
@@ -119,6 +114,10 @@ class LoginFragment : Fragment(),TextWatcher {
             val dbHandler = DatabaseHandler(requireContext())
             val user = User(email, password)
             if(dbHandler.checkUserDetails(user)){
+                val checked: Boolean = cbRememberMe.isChecked
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                editor.putBoolean("CHECKBOX", checked)
+                editor.apply()
                 gotoInputFrag()
             }
             else{
@@ -132,7 +131,6 @@ class LoginFragment : Fragment(),TextWatcher {
         val inputFragment = InputFragment()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.mainLayout, inputFragment)
-        transaction.addToBackStack(null)
         transaction.commit()
 
     }
