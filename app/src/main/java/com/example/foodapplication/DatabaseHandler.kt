@@ -14,7 +14,7 @@ const val COL_PASSWORD = "password"
 const val COL_ID = "id"
 const val COL_OTP = "OTP"
 
-class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 4) {
+class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null, 7) {
 
     override fun onCreate(db: SQLiteDatabase?) {
         val createTable = "CREATE TABLE " + TABLE_NAME +" (" +
@@ -93,7 +93,7 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
         val db = writableDatabase
         val values = ContentValues()
         values.put(COL_PASSWORD,user.password)
-        val cursor = db.rawQuery("Select * from $TABLE_NAME",null,null)
+        val cursor = db.rawQuery("select $COL_PASSWORD from $TABLE_NAME where $COL_EMAIL= \'"+user.email+"\'",null,null)
         if (cursor.moveToNext()){
             val password = cursor.getString(cursor.getColumnIndex(COL_PASSWORD))
             return if (userExists(user) && password != user.password) {

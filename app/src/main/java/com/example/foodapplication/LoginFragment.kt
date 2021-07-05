@@ -16,7 +16,6 @@ import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
-import org.w3c.dom.Text
 
 class LoginFragment : Fragment(),TextWatcher {
 

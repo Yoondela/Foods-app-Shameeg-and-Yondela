@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
@@ -27,7 +28,6 @@ class RegisterFragment : Fragment(),TextWatcher {
 
     private val random = Random()
     private val OTP = random.nextInt(8999)+1000
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_register, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,12 +40,17 @@ class RegisterFragment : Fragment(),TextWatcher {
         val username = textInputUsername.editText
         val textInputPassword = root.findViewById<TextInputLayout>(R.id.registerPassword)
         val password = textInputPassword.editText
-
+//        val callback = object:OnBackPressedCallback(true){
+//            override fun handleOnBackPressed(){
+//
+//            }
+//        }
         email?.addTextChangedListener(this)
         username?.addTextChangedListener(this)
         password?.addTextChangedListener(this)
 
         onClickRegister()
+
     }
 
     private fun onClickRegister(){
@@ -150,6 +155,7 @@ class RegisterFragment : Fragment(),TextWatcher {
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.mainLayout, loginFragment)
+        transaction.addToBackStack(null)
         transaction.commit()
     }
 
