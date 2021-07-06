@@ -1,4 +1,4 @@
-package com.example.foodapplication
+package com.example.foodapplication.emailVerification
 
 import java.security.AccessController
 import java.security.PrivilegedAction

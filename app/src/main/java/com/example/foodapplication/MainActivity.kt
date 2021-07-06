@@ -2,6 +2,7 @@ package com.example.foodapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.foodapplication.fragments.LoginFragment
 
 class MainActivity : AppCompatActivity() {
 
