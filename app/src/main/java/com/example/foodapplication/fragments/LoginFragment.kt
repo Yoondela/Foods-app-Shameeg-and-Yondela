@@ -183,4 +183,5 @@ class LoginFragment : Fragment(),TextWatcher {
             textInputPassword.error = null
         }
     }
+
 }
