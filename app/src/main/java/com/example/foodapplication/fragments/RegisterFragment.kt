@@ -1,6 +1,5 @@
-package com.example.foodapplication
+package com.example.foodapplication.fragments
 
-import DatabaseHandler
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,8 +10,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import com.example.foodapplication.R
+import com.example.foodapplication.userDatabase.User
+import com.example.foodapplication.emailVerification.OTPSender
+import com.example.foodapplication.userDatabase.DatabaseHandler
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 import java.util.regex.Pattern
@@ -28,7 +30,8 @@ class RegisterFragment : Fragment(),TextWatcher {
 
     private val random = Random()
     private val OTP = random.nextInt(8999)+1000
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_register, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(
+        R.layout.fragment_register, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -143,9 +146,6 @@ class RegisterFragment : Fragment(),TextWatcher {
             if(dbHandler.storeUserDetails(user)){
                 sendOTP(user)
             }
-            else{
-                println("Don't send OTP")
-            }
         }
     }
 
@@ -159,7 +159,7 @@ class RegisterFragment : Fragment(),TextWatcher {
         transaction.commit()
     }
 
-    private fun sendOTP(user:User){
+    private fun sendOTP(user: User){
 
         val root = requireView()
         val email = root.findViewById<TextInputLayout>(R.id.registerEmail)

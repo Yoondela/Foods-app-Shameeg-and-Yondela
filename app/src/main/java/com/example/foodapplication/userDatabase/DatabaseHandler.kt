@@ -1,4 +1,4 @@
-import com.example.foodapplication.User
+package com.example.foodapplication.userDatabase
 
 import android.content.ContentValues
 import android.content.Context
@@ -32,7 +32,7 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
         onCreate(db)
     }
 
-    fun storeUserDetails(user:User):Boolean{
+    fun storeUserDetails(user: User):Boolean{
 
         val db = writableDatabase
         val values = ContentValues()
@@ -71,7 +71,7 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
         return false
     }
 
-    fun checkOTP(user:User):Boolean{
+    fun checkOTP(user: User):Boolean{
 
         val db = readableDatabase
         val query = "Select * from $TABLE_NAME"
@@ -88,7 +88,7 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
         return false
     }
 
-    fun resetPassword(user:User):Boolean{
+    fun resetPassword(user: User):Boolean{
 
         val db = writableDatabase
         val values = ContentValues()
@@ -113,7 +113,7 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
         db.close()
     }
 
-    private fun userExists(user:User):Boolean{
+    private fun userExists(user: User):Boolean{
 
         val db = readableDatabase
         val query = "Select * from $TABLE_NAME where $COL_EMAIL= \'"+user.email+"\'"

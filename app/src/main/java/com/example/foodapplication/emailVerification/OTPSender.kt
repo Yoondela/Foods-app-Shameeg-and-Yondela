@@ -1,4 +1,4 @@
-package com.example.foodapplication
+package com.example.foodapplication.emailVerification
 
 import android.util.Log
 import java.io.ByteArrayInputStream

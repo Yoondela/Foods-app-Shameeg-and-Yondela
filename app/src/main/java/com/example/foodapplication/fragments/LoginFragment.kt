@@ -1,6 +1,5 @@
-package com.example.foodapplication
+package com.example.foodapplication.fragments
 
-import DatabaseHandler
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -15,6 +14,9 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
+import com.example.foodapplication.*
+import com.example.foodapplication.userDatabase.DatabaseHandler
+import com.example.foodapplication.userDatabase.User
 import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment(),TextWatcher {
@@ -22,7 +24,8 @@ class LoginFragment : Fragment(),TextWatcher {
     lateinit var sharedPreferences: SharedPreferences
     var isRemembered = false
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_login, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(
+        R.layout.fragment_login, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

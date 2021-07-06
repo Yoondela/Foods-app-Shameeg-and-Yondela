@@ -1,6 +1,5 @@
-package com.example.foodapplication
+package com.example.foodapplication.fragments
 
-import DatabaseHandler
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,10 +10,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.foodapplication.R
+import com.example.foodapplication.userDatabase.User
+import com.example.foodapplication.userDatabase.DatabaseHandler
 
 class OtpFragment : Fragment(),TextWatcher {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?=  inflater.inflate(R.layout.fragment_otp, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?=  inflater.inflate(
+        R.layout.fragment_otp, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

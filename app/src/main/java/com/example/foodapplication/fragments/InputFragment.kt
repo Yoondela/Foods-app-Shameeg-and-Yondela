@@ -1,4 +1,4 @@
-package com.example.foodapplication
+package com.example.foodapplication.fragments
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.*
 import androidx.annotation.Nullable
+import com.example.foodapplication.R
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
