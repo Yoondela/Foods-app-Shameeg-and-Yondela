@@ -43,7 +43,8 @@ class LoginFragment : Fragment(),TextWatcher {
         sharedPreferences = requireActivity().getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
         isRemembered = sharedPreferences.getBoolean("CHECKBOX", false)
         if (isRemembered){
-            gotoInputFrag()
+            val user = User(email?.text.toString(), password?.text.toString())
+            gotoInputFrag(user)
         }
     }
 
@@ -115,12 +116,11 @@ class LoginFragment : Fragment(),TextWatcher {
             val dbHandler = DatabaseHandler(requireContext())
             val user = User(email, password)
             if(dbHandler.checkUserDetails(user)){
-                sendUserEmail(user)
                 val checked: Boolean = cbRememberMe.isChecked
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
                 editor.putBoolean("CHECKBOX", checked)
                 editor.apply()
-                gotoInputFrag()
+                gotoInputFrag(user)
             }
             else{
                 Toast.makeText(requireContext(),"incorrect email or password", Toast.LENGTH_SHORT).show()
@@ -128,13 +128,15 @@ class LoginFragment : Fragment(),TextWatcher {
         }
     }
 
-    private fun gotoInputFrag(){
+    private fun gotoInputFrag(user: User){
 
         val inputFragment = InputFragment()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        val bundle = Bundle()
+        bundle.putString("UID", user.email)
+        inputFragment.arguments = bundle
         transaction.replace(R.id.mainLayout, inputFragment)
         transaction.commit()
-
     }
 
     private fun gotoRegistration(){
@@ -182,14 +184,5 @@ class LoginFragment : Fragment(),TextWatcher {
         else if(textInputPassword.error == "Field cannot be empty" && password.isNotEmpty()){
             textInputPassword.error = null
         }
-    }
-
-    private fun sendUserEmail(user: User){
-
-        val bundle = Bundle()
-        val outputFragment= OutputFragment()
-        bundle.putString("UID", user.email)
-
-        outputFragment.arguments = bundle
     }
 }

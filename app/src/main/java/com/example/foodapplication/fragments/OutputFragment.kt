@@ -44,7 +44,7 @@ class OutputFragment : Fragment() {
         val calender = Calendar.getInstance()
         val currentDate = SimpleDateFormat("MMM, d, yyyy").format(calender.time)
         if(calories!= 0.0){
-            val cals= Calories(uid,calories.roundToInt(), currentDate)
+            val cals= Calories(uid, calories.roundToInt(), currentDate)
             userViewModel.addCalories(cals)
             Toast.makeText(requireContext(), "updated correctly", Toast.LENGTH_SHORT).show()
         }
