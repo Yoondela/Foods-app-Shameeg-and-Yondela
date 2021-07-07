@@ -35,7 +35,6 @@ class LoginFragment : Fragment(),TextWatcher {
         val textInputPassword = root.findViewById<TextInputLayout>(R.id.loginPassword)
         val email = textInputEmail.editText
         val password = textInputPassword.editText
-
         email?.addTextChangedListener(this)
         password?.addTextChangedListener(this)
 
@@ -116,6 +115,7 @@ class LoginFragment : Fragment(),TextWatcher {
             val dbHandler = DatabaseHandler(requireContext())
             val user = User(email, password)
             if(dbHandler.checkUserDetails(user)){
+                sendUserEmail(user)
                 val checked: Boolean = cbRememberMe.isChecked
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
                 editor.putBoolean("CHECKBOX", checked)
@@ -184,4 +184,12 @@ class LoginFragment : Fragment(),TextWatcher {
         }
     }
 
+    private fun sendUserEmail(user: User){
+
+        val bundle = Bundle()
+        val outputFragment= OutputFragment()
+        bundle.putString("UID", user.email)
+
+        outputFragment.arguments = bundle
+    }
 }

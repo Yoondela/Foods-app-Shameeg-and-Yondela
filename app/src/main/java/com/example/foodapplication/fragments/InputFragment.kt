@@ -91,7 +91,6 @@ class InputFragment : Fragment(), Callback {
     private fun passData() {
         val bundle = Bundle()
         bundle.putDoubleArray("calories", listOfCalories.toDoubleArray())
-
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         val outputFragment = OutputFragment()
 

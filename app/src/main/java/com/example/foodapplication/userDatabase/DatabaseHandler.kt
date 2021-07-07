@@ -4,9 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.os.Bundle
 import android.widget.Toast
-import com.example.foodapplication.fragments.OutputFragment
 
 const val DATABASE_NAME = "MyDB"
 const val TABLE_NAME = "Users"
@@ -123,4 +121,17 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
 
         return cursor.moveToFirst()
     }
+
+//    fun getUserEmail():String{
+//
+//        val db = readableDatabase
+//        val query = "Select * from $TABLE_NAME"
+//        val cursor = db.rawQuery(query, null, null)
+//
+//        return if(cursor.moveToNext()) {
+//            cursor.getString(cursor.getColumnIndex(COL_EMAIL)).toString()
+//        } else{
+//            cursor.getString(cursor.getColumnIndex(COL_EMAIL)).toString()
+//        }
+//    }
 }
