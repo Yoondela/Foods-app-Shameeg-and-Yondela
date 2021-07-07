@@ -27,7 +27,6 @@ class OutputFragment : Fragment() {
         var totalCals = root.findViewById<TextView>(R.id.totalCalories)
         var listOfCalories = checkNotNull(arguments?.getDoubleArray("calories"))
         var btnSave = root.findViewById<Button>(R.id.btnAddToDB)
-
         for(element in listOfCalories){
             calories += element
         }
@@ -41,10 +40,11 @@ class OutputFragment : Fragment() {
 
     private fun insertCalsToDatabase(){
 
+        val uid = checkNotNull(arguments?.getString("UID"))
         val calender = Calendar.getInstance()
         val currentDate = SimpleDateFormat("MMM, d, yyyy").format(calender.time)
         if(calories!= 0.0){
-            val cals= Calories(0,calories.roundToInt(), currentDate)
+            val cals= Calories(uid, calories.roundToInt(), currentDate)
             userViewModel.addCalories(cals)
             Toast.makeText(requireContext(), "updated correctly", Toast.LENGTH_SHORT).show()
         }

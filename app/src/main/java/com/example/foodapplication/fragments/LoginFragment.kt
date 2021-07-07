@@ -35,7 +35,6 @@ class LoginFragment : Fragment(),TextWatcher {
         val textInputPassword = root.findViewById<TextInputLayout>(R.id.loginPassword)
         val email = textInputEmail.editText
         val password = textInputPassword.editText
-
         email?.addTextChangedListener(this)
         password?.addTextChangedListener(this)
 
@@ -44,7 +43,8 @@ class LoginFragment : Fragment(),TextWatcher {
         sharedPreferences = requireActivity().getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
         isRemembered = sharedPreferences.getBoolean("CHECKBOX", false)
         if (isRemembered){
-            gotoInputFrag()
+            val user = User(email?.text.toString(), password?.text.toString())
+            gotoInputFrag(user)
         }
     }
 
@@ -120,7 +120,7 @@ class LoginFragment : Fragment(),TextWatcher {
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
                 editor.putBoolean("CHECKBOX", checked)
                 editor.apply()
-                gotoInputFrag()
+                gotoInputFrag(user)
             }
             else{
                 Toast.makeText(requireContext(),"incorrect email or password", Toast.LENGTH_SHORT).show()
@@ -128,13 +128,15 @@ class LoginFragment : Fragment(),TextWatcher {
         }
     }
 
-    private fun gotoInputFrag(){
+    private fun gotoInputFrag(user: User){
 
         val inputFragment = InputFragment()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        val bundle = Bundle()
+        bundle.putString("UID", user.email)
+        inputFragment.arguments = bundle
         transaction.replace(R.id.mainLayout, inputFragment)
         transaction.commit()
-
     }
 
     private fun gotoRegistration(){
@@ -183,5 +185,4 @@ class LoginFragment : Fragment(),TextWatcher {
             textInputPassword.error = null
         }
     }
-
 }
