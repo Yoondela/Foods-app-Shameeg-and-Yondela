@@ -23,4 +23,5 @@ class User {
     constructor(OTP: String){
         this.OTP = OTP
     }
+    constructor()
 }

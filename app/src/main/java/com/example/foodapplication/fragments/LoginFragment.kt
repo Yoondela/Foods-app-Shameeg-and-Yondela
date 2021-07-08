@@ -43,7 +43,7 @@ class LoginFragment : Fragment(),TextWatcher {
         sharedPreferences = requireActivity().getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
         isRemembered = sharedPreferences.getBoolean("CHECKBOX", false)
         if (isRemembered){
-            val user = User(email?.text.toString(), password?.text.toString())
+            val user = User()
             gotoInputFrag(user)
         }
     }
@@ -133,7 +133,7 @@ class LoginFragment : Fragment(),TextWatcher {
         val inputFragment = InputFragment()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         val bundle = Bundle()
-        bundle.putString("UID", user.email)
+        bundle.putString("userEmail", user.email)
         inputFragment.arguments = bundle
         transaction.replace(R.id.mainLayout, inputFragment)
         transaction.commit()
