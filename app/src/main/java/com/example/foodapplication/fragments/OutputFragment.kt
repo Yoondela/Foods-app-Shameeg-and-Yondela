@@ -15,7 +15,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 class OutputFragment : Fragment() {
-    private lateinit var userViewModel: CaloriesViewModel
+    private lateinit var caloriesViewModel: CaloriesViewModel
     var calories = 0.0
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(
         R.layout.fragment_output, container, false)
@@ -32,7 +32,7 @@ class OutputFragment : Fragment() {
         }
 
         totalCals.text = "total amount of calories consumed: ${calories.roundToInt()}"
-        userViewModel = ViewModelProvider(this).get(CaloriesViewModel::class.java)
+        caloriesViewModel = ViewModelProvider(this).get(CaloriesViewModel::class.java)
         btnSave.setOnClickListener {
             insertCalsToDatabase()
         }
@@ -44,8 +44,8 @@ class OutputFragment : Fragment() {
         val calender = Calendar.getInstance()
         val currentDate = SimpleDateFormat("MMM, d, yyyy").format(calender.time)
         if(calories!= 0.0){
-            val cals= Calories(0, userEmail, calories.roundToInt(), currentDate)
-            userViewModel.addCalories(cals)
+            val cals = Calories(0, userEmail, calories.roundToInt(), currentDate)
+            caloriesViewModel.addCalories(cals)
             Toast.makeText(requireContext(), "updated successfully", Toast.LENGTH_SHORT).show()
         }
     }
