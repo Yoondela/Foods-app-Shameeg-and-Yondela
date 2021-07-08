@@ -91,8 +91,8 @@ class InputFragment : Fragment(), Callback {
     private fun passData() {
         val bundle = Bundle()
         bundle.putDoubleArray("calories", listOfCalories.toDoubleArray())
-        val uid = checkNotNull(arguments?.getString("UID"))
-        bundle.putString("UID", uid)
+        val userEmail = checkNotNull(arguments?.getString("userEmail"))
+        bundle.putString("userEmail", userEmail)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         val outputFragment = OutputFragment()
 

@@ -40,13 +40,13 @@ class OutputFragment : Fragment() {
 
     private fun insertCalsToDatabase(){
 
-        val uid = checkNotNull(arguments?.getString("UID"))
+        val userEmail = checkNotNull(arguments?.getString("userEmail"))
         val calender = Calendar.getInstance()
         val currentDate = SimpleDateFormat("MMM, d, yyyy").format(calender.time)
         if(calories!= 0.0){
-            val cals= Calories(uid, calories.roundToInt(), currentDate)
+            val cals= Calories(0, userEmail, calories.roundToInt(), currentDate)
             userViewModel.addCalories(cals)
-            Toast.makeText(requireContext(), "updated correctly", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "updated successfully", Toast.LENGTH_SHORT).show()
         }
     }
 }
