@@ -9,13 +9,11 @@ import kotlinx.coroutines.launch
 
 class CaloriesViewModel(application: Application):AndroidViewModel(application) {
 
-    private val readAllData:LiveData<List<Calories>>
     private val repo:CaloriesRepository
 
     init{
         val caloriesDao = CaloriesDatabase.getIntakeDatabase(application).userIntakeDao()
         repo = CaloriesRepository(caloriesDao)
-        readAllData = repo.readAllData
     }
 
     fun addCalories(calories: Calories){
@@ -23,4 +21,7 @@ class CaloriesViewModel(application: Application):AndroidViewModel(application) 
             repo.addCalories(calories)
         }
     }
+
+    fun readUserCalories(email:String) =
+        repo.readUserCalories(email)
 }

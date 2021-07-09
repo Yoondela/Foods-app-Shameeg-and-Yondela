@@ -121,17 +121,4 @@ class DatabaseHandler(private var context: Context):SQLiteOpenHelper(context, DA
 
         return cursor.moveToFirst()
     }
-
-//    fun getUserEmail():String{
-//
-//        val db = readableDatabase
-//        val query = "Select * from $TABLE_NAME"
-//        val cursor = db.rawQuery(query, null, null)
-//
-//        return if(cursor.moveToNext()) {
-//            cursor.getString(cursor.getColumnIndex(COL_EMAIL)).toString()
-//        } else{
-//            cursor.getString(cursor.getColumnIndex(COL_EMAIL)).toString()
-//        }
-//    }
 }

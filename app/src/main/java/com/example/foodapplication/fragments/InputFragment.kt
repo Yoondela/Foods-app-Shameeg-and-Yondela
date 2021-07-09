@@ -151,7 +151,13 @@ class InputFragment : Fragment(), Callback {
     }
 
     private fun gotoProgressFrag(){
+
         val progressFragment = ProgressFragment()
+        val bundle=Bundle()
+        val userEmail = checkNotNull(arguments?.getString("userEmail"))
+        bundle.putString("userEmail", userEmail)
+        progressFragment.arguments = bundle
+
         requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, progressFragment).addToBackStack(null).commit()
     }
 }
