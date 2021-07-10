@@ -23,6 +23,7 @@ class LoginFragment : Fragment(),TextWatcher {
 
     lateinit var sharedPreferences: SharedPreferences
     var isRemembered = false
+    private var isLoggedIn = false // sets to true when app opens input fragment to start sending notifications
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(
         R.layout.fragment_login, container, false)
@@ -137,6 +138,8 @@ class LoginFragment : Fragment(),TextWatcher {
         inputFragment.arguments = bundle
         transaction.replace(R.id.mainLayout, inputFragment)
         transaction.commit()
+        isLoggedIn = true
+//        Toast.makeText(requireContext(), "isLoggedIn = $isLoggedIn", Toast.LENGTH_SHORT).show()
     }
 
     private fun gotoRegistration(){
@@ -184,5 +187,9 @@ class LoginFragment : Fragment(),TextWatcher {
         else if(textInputPassword.error == "Field cannot be empty" && password.isNotEmpty()){
             textInputPassword.error = null
         }
+    }
+
+    fun getLoginStatus(): Boolean{
+        return isLoggedIn
     }
 }

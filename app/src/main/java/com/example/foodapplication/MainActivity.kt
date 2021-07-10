@@ -11,6 +11,7 @@ import com.example.foodapplication.fragments.LoginFragment
 import java.util.*
 import kotlin.collections.ArrayList
 import com.example.foodapplication.Notifications.AlarmReceiver
+import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             setDefaultScreen()
         }
-        val numberOfNotifications = 5
+        val numberOfNotifications = 2
         createNotificationChannel()
         setAlarm(numberOfNotifications)
     }
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             calendarList.add(now)
         }
         for(calendar in calendarList){
-            calendar.add(Calendar.HOUR,24) // still need to get this to be a specific time of the day
+            calendar.add(Calendar.SECOND,10) // still need to get this to be a specific time of the day
             val requestCode = Random().nextInt() // just a request id
             val intent = Intent(this, alarmReceiver::class.java)
             intent.putExtra("REQUEST_CODE", requestCode)
@@ -72,8 +73,14 @@ class MainActivity : AppCompatActivity() {
             else
                 am.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis,pi)
 
-//            Toast.makeText(this, "Alarm has been set", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Alarm has been set", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun getTodayDate(): String {
+        val sdf = SimpleDateFormat("yyyy/MM/dd")
+        val date = Date()
+        return (sdf.format(date))
     }
 
 }
