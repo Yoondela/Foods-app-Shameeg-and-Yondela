@@ -11,6 +11,7 @@ import com.example.foodapplication.fragments.LoginFragment
 import java.util.*
 import kotlin.collections.ArrayList
 import com.example.foodapplication.Notifications.AlarmReceiver
+import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity() {
 
@@ -74,6 +75,12 @@ class MainActivity : AppCompatActivity() {
 
             Toast.makeText(this, "Alarm has been set", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun getTodayDate(): String {
+        val sdf = SimpleDateFormat("yyyy/MM/dd")
+        val date = Date()
+        return (sdf.format(date))
     }
 
 }
