@@ -9,4 +9,5 @@ class CaloriesRepository(private val caloriesDao: CaloriesDao) {
     fun readUserCalories(email:String) =
         caloriesDao.readUserCalories(email)
 
+
 }

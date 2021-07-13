@@ -37,9 +37,9 @@ class ProgressFragment : Fragment() {
         caloriesViewModel = ViewModelProvider(this).get(CaloriesViewModel::class.java)
         caloriesViewModel.readUserCalories(email.toString()).observe(viewLifecycleOwner, { calories ->
             calories.forEachIndexed { index, calories ->
-                dataValues.add(Entry(index.toFloat(),calories.calories.toFloat()))
-                setChartData(dataValues)
+                dataValues.add(Entry(index.toFloat(), calories.calories.toFloat()))
             }
+            setChartData(dataValues)
         })
     }
 
@@ -60,7 +60,7 @@ class ProgressFragment : Fragment() {
         xAxis.valueFormatter = LineChartXAxisValueFormatter()
     }
 
-    class LineChartXAxisValueFormatter : IndexAxisValueFormatter() {
+    inner class LineChartXAxisValueFormatter : IndexAxisValueFormatter() {
         override fun getFormattedValue(value: Float): String {
 
             return "date"

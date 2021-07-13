@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.Nullable
 import androidx.lifecycle.ViewModelProvider
 import com.example.foodapplication.R
 import com.example.foodapplication.progressDatabase.Calories
@@ -20,6 +21,22 @@ class OutputFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(
         R.layout.fragment_output, container, false)
 
+    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.show_prog_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.showProg -> gotoProgressFrag()
+        }
+        return super.onOptionsItemSelected(item)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -43,10 +60,19 @@ class OutputFragment : Fragment() {
         val userEmail = checkNotNull(arguments?.getString("userEmail"))
         val calender = Calendar.getInstance()
         val currentDate = SimpleDateFormat("MMM, d, yyyy").format(calender.time)
-        if(calories!= 0.0){
-            val cals = Calories(0, userEmail, calories.roundToInt(), currentDate)
-            caloriesViewModel.addCalories(cals)
-            Toast.makeText(requireContext(), "updated successfully", Toast.LENGTH_SHORT).show()
-        }
+        val DBcals = Calories(0,userEmail,calories.roundToInt(),currentDate)
+        caloriesViewModel.addCalories(DBcals)
+        Toast.makeText(requireContext(), "updated successfully", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun gotoProgressFrag(){
+
+        val progressFragment = ProgressFragment()
+        val bundle=Bundle()
+        val userEmail = checkNotNull(arguments?.getString("userEmail"))
+        bundle.putString("userEmail", userEmail)
+        progressFragment.arguments = bundle
+
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, progressFragment).addToBackStack(null).commit()
     }
 }

@@ -44,7 +44,6 @@ class InputFragment : Fragment(), Callback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.logoutMenuItem -> executeLogout()
-            R.id.showProg -> gotoProgressFrag()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -148,16 +147,5 @@ class InputFragment : Fragment(), Callback {
         val loginFragment = LoginFragment()
         requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, loginFragment).commit()
         Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_LONG).show()
-    }
-
-    private fun gotoProgressFrag(){
-
-        val progressFragment = ProgressFragment()
-        val bundle=Bundle()
-        val userEmail = checkNotNull(arguments?.getString("userEmail"))
-        bundle.putString("userEmail", userEmail)
-        progressFragment.arguments = bundle
-
-        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, progressFragment).addToBackStack(null).commit()
     }
 }
