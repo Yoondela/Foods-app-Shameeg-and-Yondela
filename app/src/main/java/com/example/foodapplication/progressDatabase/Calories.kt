@@ -8,6 +8,6 @@ data class Calories(
     @PrimaryKey(autoGenerate = true)
     val uid:Int,
     val userEmail:String,
-    val calories:Int,
+    var calories:Int,
     val date:String
 )
