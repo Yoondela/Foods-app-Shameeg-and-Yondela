@@ -23,4 +23,7 @@ class CaloriesViewModel(application: Application):AndroidViewModel(application) 
 
     fun readUserCalories(email:String) =
         repo.readUserCalories(email)
+
+    fun readUserEntryDate(email:String,date:String)=
+        repo.readUserEntryDate(email,date)
 }
