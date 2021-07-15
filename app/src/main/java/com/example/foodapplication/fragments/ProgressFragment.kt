@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.example.foodapplication.R
+import com.example.foodapplication.progressDatabase.Calories
 import com.example.foodapplication.progressDatabase.CaloriesViewModel
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
@@ -14,6 +15,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import kotlin.collections.ArrayList
 
 class ProgressFragment : Fragment() {
 
@@ -32,15 +34,38 @@ class ProgressFragment : Fragment() {
 
     private fun getDataValuesAndSetChartData(){
 
-        var dataValues = ArrayList<Entry>()
         val email = checkNotNull(arguments?.get("userEmail"))
+        val setOfCals = mutableSetOf<Int>()
         caloriesViewModel = ViewModelProvider(this).get(CaloriesViewModel::class.java)
-        caloriesViewModel.readUserCalories(email.toString()).observe(viewLifecycleOwner, { calories ->
-            calories.forEachIndexed { index, calories ->
-                dataValues.add(Entry(index.toFloat(), calories.calories.toFloat()))
+        caloriesViewModel.readUserCalories(email.toString()).observe(viewLifecycleOwner, { userFilteredData ->
+            for(calories in userFilteredData) {
+                caloriesViewModel.readUserEntryDate(email.toString(), calories.date).observe(viewLifecycleOwner, { dateFilteredData ->
+                    if (dateFilteredData.size > 1) {
+                        var updatedCals = 0
+                        for (items in dateFilteredData) {
+                            updatedCals += items.calories
+                        }
+                        setOfCals.add(updatedCals)
+                    }
+                    else{
+                        var updatedCals=0
+                        updatedCals+=calories.calories
+                        setOfCals.add(updatedCals)
+                    }
+                    getUpdatedCals(setOfCals)
+                })
             }
-            setChartData(dataValues)
         })
+    }
+
+    private fun getUpdatedCals(setOfCals: MutableSet<Int>) {
+
+        var dataValues = ArrayList<Entry>()
+
+        setOfCals.forEachIndexed { index, i ->
+            dataValues.add(Entry(index.toFloat(),i.toFloat()))
+        }
+        setChartData(dataValues)
     }
 
     private fun setChartData(dataValues:ArrayList<Entry>){
@@ -60,7 +85,7 @@ class ProgressFragment : Fragment() {
         xAxis.valueFormatter = LineChartXAxisValueFormatter()
     }
 
-    inner class LineChartXAxisValueFormatter : IndexAxisValueFormatter() {
+    inner class LineChartXAxisValueFormatter : IndexAxisValueFormatter(){
         override fun getFormattedValue(value: Float): String {
 
             return "date"
