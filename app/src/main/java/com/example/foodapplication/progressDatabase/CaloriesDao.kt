@@ -17,4 +17,7 @@ interface CaloriesDao {
 
     @Query("select * from calories_table where userEmail = :email")
     fun readUserCalories(email:String):LiveData<List<Calories>>
+
+    @Query("select * from calories_table where userEmail = :email and date =:date")
+    fun readUserEntryDate(email:String,date:String):LiveData<List<Calories>>
 }
