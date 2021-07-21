@@ -15,14 +15,15 @@ import com.example.foodapplication.fragments.LoginFragment
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
 
-        sendNotification(context!!, intent!!)
+        sendNotification(context, intent)
+        Toast.makeText(context!!, "Notification sent", Toast.LENGTH_SHORT).show()
 
     }
 
     private fun sendNotification(context: Context?, intent: Intent?){
         val CHANNEL_ID = "channel_id"
-        val activity = MainActivity()
-        val today: String = activity.getTodayDate()
+//        val activity = MainActivity()
+//        val today: String = activity.getTodayDate()
 
         val _intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -33,7 +34,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context!!, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_message)
             .setContentTitle("Food Application")
-            .setStyle(NotificationCompat.BigTextStyle().bigText("Remember to record your food intake for today ($today)\nTap to open application"))
+            .setStyle(NotificationCompat.BigTextStyle().bigText("Remember to record your food intake for today\nTap to open application"))
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
