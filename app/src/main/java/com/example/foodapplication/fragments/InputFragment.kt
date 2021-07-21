@@ -1,17 +1,28 @@
 package com.example.foodapplication.fragments
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.*
 import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
+import com.example.foodapplication.Notifications.AlarmReceiver
+import com.example.foodapplication.Notifications.UserNotification
 import com.example.foodapplication.R
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
 import java.lang.StringBuilder
+import java.util.*
+import kotlin.collections.ArrayList
 
 class InputFragment : Fragment(), Callback {
 
@@ -22,8 +33,14 @@ class InputFragment : Fragment(), Callback {
     private var listOfFood = ArrayList<String>()
     private var listOfCalories = ArrayList<Double>()
     private val client = OkHttpClient()
+
     inner class Data(val items: List<Items>)
     inner class Items(val calories: Double)
+
+    private lateinit var picker: MaterialTimePicker
+    private lateinit var calendar: Calendar
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var pendingIntent: PendingIntent
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,8 +59,12 @@ class InputFragment : Fragment(), Callback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val userNotification = UserNotification()
         when(item.itemId) {
             R.id.logoutMenuItem -> executeLogout()
+            R.id.setTimeOfDayItem -> showTimePicker()
+            R.id.startNotificationItem -> setAlarm()
+            R.id.dontNotifyMeItem -> cancelAlarm()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -148,4 +169,50 @@ class InputFragment : Fragment(), Callback {
         requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, loginFragment).commit()
         Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_LONG).show()
     }
+
+    private fun showTimePicker(){
+        picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(12)
+            .setMinute(0)
+            .setTitleText("Select Notification Time")
+            .build()
+
+        picker.show(requireActivity().supportFragmentManager, "channel_id")
+
+        picker.addOnPositiveButtonClickListener{
+
+            calendar = Calendar.getInstance()
+            calendar[Calendar.HOUR_OF_DAY] = picker.hour
+            calendar[Calendar.MINUTE] = picker.minute
+            calendar[Calendar.SECOND] = 0
+            calendar[Calendar.MILLISECOND] = 0
+
+        }
+    }
+
+    private fun setAlarm() {
+
+        alarmManager = activity?.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(requireContext(), AlarmReceiver::class.java)
+
+        pendingIntent = PendingIntent.getBroadcast(requireContext(),0, intent,0)
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+
+        Toast.makeText(requireContext(), "Notifications set", Toast.LENGTH_SHORT).show()
+
+    }
+
+    private fun cancelAlarm() {
+        alarmManager = activity?.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(requireContext(), AlarmReceiver::class.java)
+
+        pendingIntent = PendingIntent.getBroadcast(requireContext(),0, intent,0)
+
+        alarmManager.cancel(pendingIntent)
+
+        Toast.makeText(requireContext(),"Notifications canceled", Toast.LENGTH_SHORT).show()
+    }
+
 }
