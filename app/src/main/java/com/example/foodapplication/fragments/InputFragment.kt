@@ -37,11 +37,6 @@ class InputFragment : Fragment(), Callback {
     inner class Data(val items: List<Items>)
     inner class Items(val calories: Double)
 
-    private lateinit var picker: MaterialTimePicker
-    private lateinit var calendar: Calendar
-    private lateinit var alarmManager: AlarmManager
-    private lateinit var pendingIntent: PendingIntent
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,12 +54,11 @@ class InputFragment : Fragment(), Callback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val userNotification = UserNotification()
+        val userNotification = UserNotification(requireContext())
         when(item.itemId) {
             R.id.logoutMenuItem -> executeLogout()
-            R.id.setTimeOfDayItem -> showTimePicker()
-            R.id.startNotificationItem -> setAlarm()
-            R.id.dontNotifyMeItem -> cancelAlarm()
+            R.id.setTimeOfDayItem -> userNotification.showTimePicker()
+            R.id.dontNotifyMeItem -> userNotification.cancelAlarm()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -169,50 +163,4 @@ class InputFragment : Fragment(), Callback {
         requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, loginFragment).commit()
         Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_LONG).show()
     }
-
-    private fun showTimePicker(){
-        picker = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_12H)
-            .setHour(12)
-            .setMinute(0)
-            .setTitleText("Select Notification Time")
-            .build()
-
-        picker.show(requireActivity().supportFragmentManager, "channel_id")
-
-        picker.addOnPositiveButtonClickListener{
-
-            calendar = Calendar.getInstance()
-            calendar[Calendar.HOUR_OF_DAY] = picker.hour
-            calendar[Calendar.MINUTE] = picker.minute
-            calendar[Calendar.SECOND] = 0
-            calendar[Calendar.MILLISECOND] = 0
-
-        }
-    }
-
-    private fun setAlarm() {
-
-        alarmManager = activity?.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(requireContext(), AlarmReceiver::class.java)
-
-        pendingIntent = PendingIntent.getBroadcast(requireContext(),0, intent,0)
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
-
-        Toast.makeText(requireContext(), "Notifications set", Toast.LENGTH_SHORT).show()
-
-    }
-
-    private fun cancelAlarm() {
-        alarmManager = activity?.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(requireContext(), AlarmReceiver::class.java)
-
-        pendingIntent = PendingIntent.getBroadcast(requireContext(),0, intent,0)
-
-        alarmManager.cancel(pendingIntent)
-
-        Toast.makeText(requireContext(),"Notifications canceled", Toast.LENGTH_SHORT).show()
-    }
-
 }
