@@ -22,8 +22,8 @@ class AlarmReceiver : BroadcastReceiver() {
 
     private fun sendNotification(context: Context?, intent: Intent?){
         val CHANNEL_ID = "channel_id"
-//        val activity = MainActivity()
-//        val today: String = activity.getTodayDate()
+        val userNotification = UserNotification(context!!)
+        val todayDate: String = userNotification.getTodayDate()
 
         val _intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -34,7 +34,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context!!, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_message)
             .setContentTitle("Food Application")
-            .setStyle(NotificationCompat.BigTextStyle().bigText("Remember to record your food intake for today\nTap to open application"))
+            .setStyle(NotificationCompat.BigTextStyle().bigText("Remember to record your food intake for today ($todayDate)\nTap to open application"))
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 

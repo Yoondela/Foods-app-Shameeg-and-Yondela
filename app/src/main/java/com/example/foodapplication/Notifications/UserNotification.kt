@@ -9,31 +9,39 @@ import android.content.Intent
 import android.os.Build
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.fragment.app.Fragment
+import com.example.foodapplication.MainActivity
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
-class UserNotification : Fragment() {
-
+class UserNotification {
+    
+    private val context: Context
+    
+    constructor(context:Context){
+        this.context = context
+    }
+    
     private lateinit var picker: MaterialTimePicker
     private lateinit var calendar: Calendar
     private lateinit var alarmManager: AlarmManager
     private lateinit var pendingIntent: PendingIntent
 
-    fun createNotificationChannel(){
+    fun createNotificationChannel() {
         val CHANNEL_ID = "channel_id"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Food Application"
-            val descriptionText = "Remember to record your food intake for today. Tap to open application"
+            val descriptionText =
+                "Remember to record your food intake for today. Tap to open application"
             val importance: Int = NotificationManager.IMPORTANCE_DEFAULT
-            val channel: NotificationChannel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
+            val channel: NotificationChannel =
+                NotificationChannel(CHANNEL_ID, name, importance).apply {
+                    description = descriptionText
+                }
 
-            val notificationManager: NotificationManager = activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager: NotificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
@@ -46,7 +54,7 @@ class UserNotification : Fragment() {
             .setTitleText("Select Notification Time")
             .build()
 
-        picker.show(requireActivity().supportFragmentManager, "channel_id")
+        picker.show((context as MainActivity).supportFragmentManager, "channel_id")
 
         picker.addOnPositiveButtonClickListener{
 
@@ -55,31 +63,36 @@ class UserNotification : Fragment() {
             calendar[Calendar.MINUTE] = picker.minute
             calendar[Calendar.SECOND] = 0
             calendar[Calendar.MILLISECOND] = 0
-
         }
     }
 
     fun setAlarm() {
+        calendar = Calendar.getInstance()
+        alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, AlarmReceiver::class.java)
 
-        alarmManager = activity?.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(requireContext(), AlarmReceiver::class.java)
-
-        pendingIntent = PendingIntent.getBroadcast(requireContext(),0, intent,0)
+        pendingIntent = PendingIntent.getBroadcast(context,0, intent,0)
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
 
-        Toast.makeText(requireContext(), "Notifications set", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Notifications set", Toast.LENGTH_SHORT).show()
 
     }
 
     fun cancelAlarm() {
-        alarmManager = activity?.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(requireContext(), AlarmReceiver::class.java)
+        alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, AlarmReceiver::class.java)
 
-        pendingIntent = PendingIntent.getBroadcast(requireContext(),0, intent,0)
+        pendingIntent = PendingIntent.getBroadcast(context,0, intent,0)
 
         alarmManager.cancel(pendingIntent)
 
-        Toast.makeText(requireContext(),"Notifications canceled", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,"Notifications canceled", Toast.LENGTH_SHORT).show()
+    }
+
+    fun getTodayDate(): String {
+        val sdf = SimpleDateFormat("yyyy/MM/dd")
+        val date = Date()
+        return (sdf.format(date))
     }
 }
