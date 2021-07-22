@@ -9,6 +9,6 @@ class CaloriesRepository(private val caloriesDao: CaloriesDao) {
     fun readUserCalories(email:String) =
         caloriesDao.readUserCalories(email)
 
-    fun readUserEntryDate(email:String,date:String)=
+    fun readUserEntryDate(email:String,date:Float)=
         caloriesDao.readUserEntryDate(email,date)
 }
