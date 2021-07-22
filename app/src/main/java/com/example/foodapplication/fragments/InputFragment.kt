@@ -58,7 +58,6 @@ class InputFragment : Fragment(), Callback {
         when(item.itemId) {
             R.id.logoutMenuItem -> executeLogout()
             R.id.setTimeOfDayItem -> userNotification.showTimePicker()
-            R.id.startNotificationItem -> userNotification.setAlarm()
             R.id.dontNotifyMeItem -> userNotification.cancelAlarm()
         }
         return super.onOptionsItemSelected(item)

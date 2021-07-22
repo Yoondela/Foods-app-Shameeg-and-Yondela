@@ -63,6 +63,8 @@ class UserNotification {
             calendar[Calendar.MINUTE] = picker.minute
             calendar[Calendar.SECOND] = 0
             calendar[Calendar.MILLISECOND] = 0
+
+            setAlarm()
         }
     }
 
