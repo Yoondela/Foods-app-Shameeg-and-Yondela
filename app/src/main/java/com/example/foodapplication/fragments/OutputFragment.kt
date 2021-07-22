@@ -59,8 +59,12 @@ class OutputFragment : Fragment() {
 
         val userEmail = checkNotNull(arguments?.getString("userEmail"))
         val calender = Calendar.getInstance()
-        val currentDate = SimpleDateFormat("MMM, d, yyyy").format(calender.time)
-        val DBcals = Calories(0,userEmail,calories.roundToInt(),currentDate)
+        calender.set(Calendar.HOUR_OF_DAY,0)
+        calender.set(Calendar.MINUTE,0)
+        calender.set(Calendar.SECOND,0)
+        calender.set(Calendar.MILLISECOND,0)
+        val currentDate = calender.timeInMillis
+        val DBcals = Calories(0,userEmail,calories.roundToInt(),currentDate.toFloat())
         caloriesViewModel.addCalories(DBcals)
         Toast.makeText(requireContext(), "updated successfully", Toast.LENGTH_SHORT).show()
     }

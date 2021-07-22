@@ -9,5 +9,5 @@ data class Calories(
     val uid:Int,
     val userEmail:String,
     var calories:Int,
-    val date:String
+    val date:Float
 )
