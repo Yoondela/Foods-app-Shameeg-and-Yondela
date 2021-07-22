@@ -1,17 +1,28 @@
 package com.example.foodapplication.fragments
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.*
 import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
+import com.example.foodapplication.Notifications.AlarmReceiver
+import com.example.foodapplication.Notifications.UserNotification
 import com.example.foodapplication.R
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
 import java.lang.StringBuilder
+import java.util.*
+import kotlin.collections.ArrayList
 
 class InputFragment : Fragment(), Callback {
 
@@ -22,6 +33,7 @@ class InputFragment : Fragment(), Callback {
     private var listOfFood = ArrayList<String>()
     private var listOfCalories = ArrayList<Double>()
     private val client = OkHttpClient()
+
     inner class Data(val items: List<Items>)
     inner class Items(val calories: Double)
 
@@ -42,8 +54,11 @@ class InputFragment : Fragment(), Callback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val userNotification = UserNotification(requireContext())
         when(item.itemId) {
             R.id.logoutMenuItem -> executeLogout()
+            R.id.setTimeOfDayItem -> userNotification.showTimePicker()
+            R.id.dontNotifyMeItem -> userNotification.cancelAlarm()
         }
         return super.onOptionsItemSelected(item)
     }
