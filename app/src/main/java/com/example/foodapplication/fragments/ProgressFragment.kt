@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.ArrayList
 
 class ProgressFragment : Fragment() {
@@ -80,18 +81,42 @@ class ProgressFragment : Fragment() {
         val data = LineData(dataSets)
         lineChart.data = data
         lineChart.description = null
+        lineChart.legend.isEnabled = false
+        lineChart.isInTouchMode
+        lineDataSet.color = requireContext().getColor(R.color.white)
+        lineDataSet.setDrawValues(false)
+        lineChart.setOnClickListener {
+            lineDataSet.setDrawValues(true)
+//            lineDataSet.setDrawValues(false)
+        }
+        lineDataSet.setDrawCircles(false)
+        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        lineDataSet.setDrawFilled(true)
+        lineDataSet.fillDrawable = requireContext().getDrawable(R.drawable.chart_gradient)
+        lineDataSet.isHighlightEnabled = true
 
         //Formatting x-axis
+//        lineChart.isScaleXEnabled = false
+        val lastDate = dataValues.lastIndex
+        val calender = Calendar.getInstance()
+        calender.set(Calendar.HOUR_OF_DAY,0)
+        calender.set(Calendar.MINUTE,0)
+        calender.set(Calendar.SECOND,0)
+        calender.set(Calendar.MILLISECOND,0)
+        calender.add(Calendar.DAY_OF_YEAR,1)
+        lineChart.xAxis.axisMaximum = calender.timeInMillis.toFloat()
+
         lineChart.xAxis.setDrawGridLines(false)
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         lineChart.xAxis.granularity = 1f
         lineChart.xAxis.setLabelCount(dataValues.size,true)
         lineChart.xAxis.valueFormatter = LineChartXAxisValueFormatter()
 
-
         //Formatting y-axis
+        lineChart.isScaleYEnabled = false
         lineChart.axisLeft.setDrawGridLines(false)
         lineChart.axisRight.isEnabled = false
+        lineChart.axisLeft.axisMinimum = 0f
         lineChart.invalidate()
     }
 
