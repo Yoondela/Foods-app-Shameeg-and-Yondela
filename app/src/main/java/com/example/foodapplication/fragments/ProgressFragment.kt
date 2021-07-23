@@ -82,34 +82,18 @@ class ProgressFragment : Fragment() {
         lineChart.data = data
         lineChart.description = null
         lineChart.legend.isEnabled = false
-        lineChart.isInTouchMode
         lineDataSet.color = requireContext().getColor(R.color.white)
-        lineDataSet.setDrawValues(false)
-        lineChart.setOnClickListener {
-            lineDataSet.setDrawValues(true)
-//            lineDataSet.setDrawValues(false)
-        }
         lineDataSet.setDrawCircles(false)
         lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
         lineDataSet.setDrawFilled(true)
         lineDataSet.fillDrawable = requireContext().getDrawable(R.drawable.chart_gradient)
-        lineDataSet.isHighlightEnabled = true
 
         //Formatting x-axis
-//        lineChart.isScaleXEnabled = false
-        val lastDate = dataValues.lastIndex
-        val calender = Calendar.getInstance()
-        calender.set(Calendar.HOUR_OF_DAY,0)
-        calender.set(Calendar.MINUTE,0)
-        calender.set(Calendar.SECOND,0)
-        calender.set(Calendar.MILLISECOND,0)
-        calender.add(Calendar.DAY_OF_YEAR,1)
-        lineChart.xAxis.axisMaximum = calender.timeInMillis.toFloat()
-
+        lineChart.xAxis.axisMaximum = getMaxXValue()
+        lineChart.xAxis.axisMinimum = getMinXValue()
+        lineChart.isScaleXEnabled = false
         lineChart.xAxis.setDrawGridLines(false)
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-        lineChart.xAxis.granularity = 1f
-        lineChart.xAxis.setLabelCount(dataValues.size,true)
         lineChart.xAxis.valueFormatter = LineChartXAxisValueFormatter()
 
         //Formatting y-axis
@@ -120,11 +104,32 @@ class ProgressFragment : Fragment() {
         lineChart.invalidate()
     }
 
+    private fun getMaxXValue():Float{
+
+        val maxDay = Calendar.getInstance()
+        maxDay.set(Calendar.HOUR_OF_DAY,0)
+        maxDay.set(Calendar.MINUTE,0)
+        maxDay.set(Calendar.SECOND,0)
+        maxDay.set(Calendar.MILLISECOND,0)
+        return maxDay.timeInMillis.toFloat()
+    }
+
+    private fun getMinXValue():Float{
+
+        val minDay = Calendar.getInstance()
+        minDay.set(Calendar.HOUR_OF_DAY,0)
+        minDay.set(Calendar.MINUTE,0)
+        minDay.set(Calendar.SECOND,0)
+        minDay.set(Calendar.MILLISECOND,0)
+        minDay.add(Calendar.DAY_OF_YEAR,-7)
+        return minDay.timeInMillis.toFloat()
+    }
+
     inner class LineChartXAxisValueFormatter : IndexAxisValueFormatter(){
 
         override fun getFormattedValue(value: Float): String {
 
-            return "${SimpleDateFormat("MMM,d,yyyy").format(value)}"
+            return "${SimpleDateFormat("MMM,d").format(value)}"
         }
     }
 }
