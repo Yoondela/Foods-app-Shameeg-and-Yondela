@@ -12,9 +12,6 @@ interface CaloriesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addUserCalories(calories:Calories)
 
-    @Query("select * from calories_table")
-    fun readAllData():LiveData<List<Calories>>
-
     @Query("select * from calories_table where userEmail = :email")
     fun readUserCalories(email:String):LiveData<List<Calories>>
 

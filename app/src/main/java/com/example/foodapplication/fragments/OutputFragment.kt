@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.foodapplication.R
 import com.example.foodapplication.progressDatabase.Calories
 import com.example.foodapplication.progressDatabase.CaloriesViewModel
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
 
