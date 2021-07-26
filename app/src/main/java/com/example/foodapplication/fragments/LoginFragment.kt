@@ -1,8 +1,13 @@
 package com.example.foodapplication.fragments
 
+import android.app.KeyguardManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.hardware.biometrics.BiometricPrompt
+import android.os.Build
 import android.os.Bundle
+import android.os.CancellationSignal
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
@@ -14,6 +19,8 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import com.example.foodapplication.*
 import com.example.foodapplication.userDatabase.DatabaseHandler
 import com.example.foodapplication.userDatabase.User
@@ -21,24 +28,42 @@ import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment(),TextWatcher {
 
-    lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
     var isRemembered = false
     private var isLoggedIn = false // sets to true when app opens input fragment to start sending notifications
+    private lateinit var cancellationSignal: CancellationSignal
+    private val authenticationCallback: BiometricPrompt.AuthenticationCallback = @RequiresApi(Build.VERSION_CODES.P)
+    object : BiometricPrompt.AuthenticationCallback(){
+        override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
+            super.onAuthenticationError(errorCode, errString)
+            notifyUser("Authentication error $errString")
+        }
+
+        override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult?) {
+            super.onAuthenticationSucceeded(result)
+            notifyUser("Authentication success")
+            val user = User()
+            gotoInputFrag(user)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(
         R.layout.fragment_login, container, false)
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val root = requireView()
         val textInputEmail = root.findViewById<TextInputLayout>(R.id.loginEmail)
         val textInputPassword = root.findViewById<TextInputLayout>(R.id.loginPassword)
+        val fingerPrint = root.findViewById<TextView>(R.id.useFingerPrint)
         val email = textInputEmail.editText
         val password = textInputPassword.editText
         email?.addTextChangedListener(this)
         password?.addTextChangedListener(this)
 
+        checkBiometricSupport()
         onClickLogin()
 
         sharedPreferences = requireActivity().getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
@@ -46,6 +71,18 @@ class LoginFragment : Fragment(),TextWatcher {
         if (isRemembered){
             val user = User()
             gotoInputFrag(user)
+        }
+        fingerPrint.setOnClickListener {
+            val biometricPrompt = BiometricPrompt.Builder(requireContext())
+            .setTitle("Fingerprint Authentication")
+            .setSubtitle("Authentication is required")
+            .setDescription("This app uses biometrics to keep your data secure")
+            .setNegativeButton("Cancel",requireActivity().mainExecutor,
+                { _, _ ->
+                notifyUser("Authentication canceled")
+            })
+            .build()
+            biometricPrompt.authenticate(getCancellationSignal(), requireActivity().mainExecutor,authenticationCallback)
         }
     }
 
@@ -120,6 +157,7 @@ class LoginFragment : Fragment(),TextWatcher {
                 val checked: Boolean = cbRememberMe.isChecked
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
                 editor.putBoolean("CHECKBOX", checked)
+                editor.putString("userEmail",email)
                 editor.apply()
                 gotoInputFrag(user)
             }
@@ -139,7 +177,6 @@ class LoginFragment : Fragment(),TextWatcher {
         transaction.replace(R.id.mainLayout, inputFragment)
         transaction.commit()
         isLoggedIn = true
-//        Toast.makeText(requireContext(), "isLoggedIn = $isLoggedIn", Toast.LENGTH_SHORT).show()
     }
 
     private fun gotoRegistration(){
@@ -160,7 +197,6 @@ class LoginFragment : Fragment(),TextWatcher {
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -191,5 +227,34 @@ class LoginFragment : Fragment(),TextWatcher {
 
     fun getLoginStatus(): Boolean{
         return isLoggedIn
+    }
+
+    private fun notifyUser(message:String){
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getCancellationSignal():CancellationSignal{
+        cancellationSignal = CancellationSignal()
+        cancellationSignal?.setOnCancelListener {
+            notifyUser("Authentication was canceled")
+        }
+        return cancellationSignal
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun checkBiometricSupport():Boolean{
+        val keyguardManager = activity?.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+
+        if(!keyguardManager.isKeyguardSecure){
+            notifyUser("Fingerprint authentication has not been enabled in settings")
+            return false
+        }
+        if(ActivityCompat.checkSelfPermission(requireActivity(),android.Manifest.permission.USE_BIOMETRIC)
+            != PackageManager.PERMISSION_GRANTED){
+            return false
+        }
+        return requireActivity().packageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)
+
+        return true
     }
 }

@@ -19,4 +19,17 @@
                 android:title="Don't notify me"/>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/Biometrics"
+        android:title="Biometrics">
+        <menu>
+            <item
+                android:id="@+id/enableBiometrics"
+                android:title="Enable biometrics"/>
+            <item
+                android:id="@+id/disableBiometrics"
+                android:title="Disable biometrics"/>
+        </menu>
+    </item>
 </menu>
