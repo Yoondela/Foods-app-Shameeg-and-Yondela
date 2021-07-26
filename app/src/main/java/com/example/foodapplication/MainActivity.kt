@@ -47,19 +47,4 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
     }
-
-//    private fun createNotificationChannel(){
-//        val CHANNEL_ID = "channel_id"
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-//            val name = "Food Application"
-//            val descriptionText = "Remember to record your food intake for today. Tap to open application"
-//            val importance: Int = NotificationManager.IMPORTANCE_DEFAULT
-//            val channel: NotificationChannel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-//                description = descriptionText
-//            }
-//
-//            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            notificationManager.createNotificationChannel(channel)
-//        }
-//    }
 }
