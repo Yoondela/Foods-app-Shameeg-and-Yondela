@@ -49,8 +49,8 @@ class InputFragment : Fragment(), Callback {
             R.id.logoutMenuItem -> executeLogout()
             R.id.setTimeOfDayItem -> userNotification.showTimePicker()
             R.id.dontNotifyMeItem -> userNotification.cancelAlarm()
-            R.id.enableBiometrics -> isBiometricsEnabled = true
-            R.id.disableBiometrics -> isBiometricsEnabled = false
+            R.id.enableBiometrics -> enableBiometrics()
+            R.id.disableBiometrics -> disableBiometrics()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -60,7 +60,8 @@ class InputFragment : Fragment(), Callback {
         onClickAllButtons()
 
         preferences = requireActivity().getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
-
+        val user = preferences.getString("userEmail","email")
+        requireView().findViewById<TextView>(R.id.loggedInAs).text = user
     }
 
     private fun makeNetworkCall() {
@@ -96,10 +97,11 @@ class InputFragment : Fragment(), Callback {
     }
 
     private fun passData() {
+
         val bundle = Bundle()
+        val userEmail = getUserEmail()
         bundle.putDoubleArray("calories", listOfCalories.toDoubleArray())
-        val userEmail = preferences.getString("userEmail","email")
-        bundle.putString("userEmail", userEmail)
+        bundle.putString("userEmail",userEmail)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         val outputFragment = OutputFragment()
 
@@ -149,10 +151,38 @@ class InputFragment : Fragment(), Callback {
 
     private fun executeLogout(){
         val editor: SharedPreferences.Editor = preferences.edit()
-        editor.clear()
-        editor.apply()
+        editor.remove("CHECKBOX")
+        editor.commit()
         val loginFragment = LoginFragment()
         requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, loginFragment).commit()
         Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_LONG).show()
+    }
+
+    private fun getUserEmail():String{
+
+        var userEmail = checkNotNull(arguments?.getString("userEmail"))
+        if(userEmail == "email"){
+            userEmail = checkNotNull(preferences.getString("userEmail","email"))
+        }
+        return userEmail
+    }
+
+    private fun enableBiometrics(){
+
+        isBiometricsEnabled = true
+        val editor: SharedPreferences.Editor = preferences.edit()
+        val userEmail = getUserEmail()
+        editor.putBoolean("enabled",isBiometricsEnabled)
+        editor.putString("userEmail", userEmail)
+        editor.commit()
+    }
+
+    private fun disableBiometrics(){
+
+        isBiometricsEnabled = false
+        val editor: SharedPreferences.Editor = preferences.edit()
+        editor.remove("enabled")
+        editor.commit()
+
     }
 }
