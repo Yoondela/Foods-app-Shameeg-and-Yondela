@@ -115,5 +115,17 @@
             app:layout_constraintLeft_toRightOf="@+id/progressBar"
             app:layout_constraintTop_toTopOf="@+id/progressBar" />
 
+        <TextView
+            android:id="@+id/loggedInAs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/txtFood"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

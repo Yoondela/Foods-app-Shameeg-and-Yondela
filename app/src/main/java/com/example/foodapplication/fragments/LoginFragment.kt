@@ -40,10 +40,19 @@ class LoginFragment : Fragment(),TextWatcher {
         }
 
         override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult?) {
-            super.onAuthenticationSucceeded(result)
-            notifyUser("Authentication success")
-            val user = User()
-            gotoInputFrag(user)
+            val userEmail = checkNotNull(sharedPreferences.getString("userEmail","email"))
+            val isBiometricsEnabled = sharedPreferences.getBoolean("enabled",false)
+            val dbHandler=DatabaseHandler(requireContext())
+            val user = User(userEmail,isBiometricsEnabled)
+            if(isBiometricsEnabled && dbHandler.userExists(user)){
+                super.onAuthenticationSucceeded(result)
+                notifyUser("Authentication success")
+                val user = User()
+                gotoInputFrag(user)
+            }
+            else{
+                notifyUser("This account has not enabled biometrics")
+            }
         }
     }
 
@@ -158,7 +167,7 @@ class LoginFragment : Fragment(),TextWatcher {
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
                 editor.putBoolean("CHECKBOX", checked)
                 editor.putString("userEmail",email)
-                editor.apply()
+                editor.commit()
                 gotoInputFrag(user)
             }
             else{

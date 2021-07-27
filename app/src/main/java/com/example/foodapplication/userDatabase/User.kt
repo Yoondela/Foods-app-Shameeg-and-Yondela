@@ -7,6 +7,7 @@ class User {
     var email = "email"
     var password = "password"
     var OTP = ""
+    var isBiometricsEnable = false
 
     constructor(name:String,email:String,password:String,OTP: String){
         this.name = name
@@ -23,5 +24,11 @@ class User {
     constructor(OTP: String){
         this.OTP = OTP
     }
+
+    constructor(email:String, isBiometricsEnable:Boolean){
+        this.email = email
+        this.isBiometricsEnable = isBiometricsEnable
+    }
+
     constructor()
 }
