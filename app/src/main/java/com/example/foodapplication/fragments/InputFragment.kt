@@ -60,8 +60,6 @@ class InputFragment : Fragment(), Callback {
         onClickAllButtons()
 
         preferences = requireActivity().getSharedPreferences("SHARED_PREF", Context.MODE_PRIVATE)
-        val user = preferences.getString("userEmail","email")
-        requireView().findViewById<TextView>(R.id.loggedInAs).text = user
     }
 
     private fun makeNetworkCall() {
