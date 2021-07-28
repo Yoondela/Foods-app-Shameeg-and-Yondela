@@ -12,83 +12,74 @@
         android:id="@+id/totalCalories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="53dp"
+        android:layout_marginTop="16dp"
         android:text="Consumed Calories:"
         android:textColor="#9b9b9b"
         android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/exerciseET"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="89dp"
-
-        android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="45dp"
-        android:src="@drawable/ic_baseline_eco_24"
-        app:layout_constraintBottom_toBottomOf="@+id/exerciseET"
-        app:layout_constraintEnd_toEndOf="@+id/exerciseET"
-        app:layout_constraintHorizontal_bias="0.072"
-        app:layout_constraintStart_toStartOf="@+id/exerciseET"
-        app:layout_constraintTop_toTopOf="@+id/totalCalories"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.522" />
 
     <android.widget.Button
         android:id="@+id/btnAddToDB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginBottom="16dp"
         android:hint="Save"
         android:textColorHint="#9b9b9b"
-        app:layout_constraintEnd_toEndOf="@+id/getExerciseAmmountBtn"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/getExerciseAmmountBtn"
-        app:layout_constraintTop_toBottomOf="@+id/outputExerciseAmmountTV" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/exerciseET"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="232dp"
+        android:layout_marginBottom="8dp"
         android:hint="Exercise of choice eg 'run'"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/getExerciseAmmountBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/getExerciseAmmountBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="72dp"
         android:text="GO"
-        app:layout_constraintEnd_toEndOf="@+id/exerciseTypeTV"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseET" />
+        app:layout_constraintBottom_toTopOf="@+id/exerciseTypeTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/outputExerciseAmmountTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="144dp"
+        android:layout_marginBottom="72dp"
         android:text="Exercise ammount:"
         android:textColor="#9b9b9b"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddToDB"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/exerciseTypeTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="4dp"
         android:text="Exercise type:"
         android:textColor="#9b9b9b"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/outputExerciseAmmountTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
