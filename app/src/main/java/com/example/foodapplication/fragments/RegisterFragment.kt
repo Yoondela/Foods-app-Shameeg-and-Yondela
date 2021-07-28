@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.foodapplication.R
 import com.example.foodapplication.userDatabase.User
@@ -43,7 +44,7 @@ class RegisterFragment : Fragment(),TextWatcher {
         val username = textInputUsername.editText
         val textInputPassword = root.findViewById<TextInputLayout>(R.id.registerPassword)
         val password = textInputPassword.editText
-//        val callback = object:OnBackPressedCallback(true){
+//        val callback = object: OnBackPressedCallback(true){
 //            override fun handleOnBackPressed(){
 //
 //            }
