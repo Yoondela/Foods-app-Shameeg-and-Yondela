@@ -91,6 +91,7 @@ class ProgressFragment : Fragment() {
         //Formatting x-axis
         lineChart.xAxis.axisMaximum = getMaxXValue()
         lineChart.xAxis.axisMinimum = getMinXValue()
+        lineChart.xAxis.setCenterAxisLabels(true)
         lineChart.isScaleXEnabled = false
         lineChart.xAxis.setDrawGridLines(false)
         lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM

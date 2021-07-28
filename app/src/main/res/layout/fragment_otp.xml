@@ -10,85 +10,80 @@
 
 
     <EditText
-        android:id="@+id/etOTP3"
+        android:id="@+id/etOTP4"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:inputType="phone"
         android:maxLength="1"
         android:textAlignment="center"
+        android:backgroundTint="#9b9b9b"
         android:textColor="#9b9b9b"
-        app:layout_constraintBottom_toBottomOf="@+id/etOTP4"
-        app:layout_constraintEnd_toStartOf="@+id/etOTP4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/etOTP2"
-        app:layout_constraintTop_toTopOf="@+id/etOTP4" />
+        app:layout_constraintStart_toEndOf="@+id/etOTP3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/etOTP2"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:inputType="phone"
         android:maxLength="1"
         android:textAlignment="center"
+        android:backgroundTint="#9b9b9b"
         android:textColor="#9b9b9b"
-        app:layout_constraintBottom_toBottomOf="@+id/etOTP4"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/etOTP3"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/etOTP1"
-        app:layout_constraintTop_toTopOf="@+id/etOTP3"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etOTP3"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:inputType="phone"
+        android:maxLength="1"
+        android:textAlignment="center"
+        android:backgroundTint="#9b9b9b"
+        android:textColor="#9b9b9b"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/etOTP4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/etOTP2"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/etOTP1"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:gravity="center_horizontal"
+        android:inputType="phone"
         android:maxLength="1"
         android:textAlignment="center"
+        android:backgroundTint="#9b9b9b"
         android:textColor="#9b9b9b"
-        app:layout_constraintBottom_toBottomOf="@+id/etOTP4"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/etOTP2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/etOTP2"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/etOTP4"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:maxLength="1"
-        android:textAlignment="center"
-        android:textColor="#9b9b9b"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/etOTP3"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <android.widget.Button
-        android:id="@+id/submitOTP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="204dp"
-        android:background="#9b9b9b"
-        android:hint="Confirm"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etOTP4" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="184dp"
         android:gravity="center_horizontal"
         android:text="Enter your OTP below."
         android:textAlignment="center"
         android:textColor="#c0c0c0"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/etOTP2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

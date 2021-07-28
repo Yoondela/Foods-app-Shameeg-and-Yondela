@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.foodapplication.R
@@ -22,7 +21,6 @@ class OtpFragment : Fragment(),TextWatcher {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val root = requireView()
-        val submit = root.findViewById<Button>(R.id.submitOTP)
         val etOTP1 = root.findViewById<EditText>(R.id.etOTP1)
         val etOTP2 = root.findViewById<EditText>(R.id.etOTP2)
         val etOTP3 = root.findViewById<EditText>(R.id.etOTP3)
@@ -31,10 +29,7 @@ class OtpFragment : Fragment(),TextWatcher {
         etOTP2.addTextChangedListener(this)
         etOTP3.addTextChangedListener(this)
         etOTP4.addTextChangedListener(this)
-
-        submit.setOnClickListener {
-            checkOTPAndLogin()
-        }
+        etOTP1.requestFocus()
     }
 
     private fun checkOTPAndLogin(){
@@ -90,6 +85,9 @@ class OtpFragment : Fragment(),TextWatcher {
         }
         if (etOTP3.text.isNotEmpty()) {
             etOTP4.requestFocus()
+        }
+        if (etOTP4.text.isNotEmpty()) {
+            checkOTPAndLogin()
         }
     }
 }
