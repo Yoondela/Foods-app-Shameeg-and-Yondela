@@ -1,22 +1,27 @@
 package com.example.foodapplication.fragments
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.*
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.Nullable
 import androidx.lifecycle.ViewModelProvider
 import com.example.foodapplication.R
+import com.example.foodapplication.exercises.LoadingDialog
+import com.example.foodapplication.exercises.NutritionixAPI
 import com.example.foodapplication.progressDatabase.Calories
 import com.example.foodapplication.progressDatabase.CaloriesViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.roundToInt
 
 class OutputFragment : Fragment() {
     private lateinit var caloriesViewModel: CaloriesViewModel
     var calories = 0.0
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(
         R.layout.fragment_output, container, false)
 
@@ -40,6 +45,9 @@ class OutputFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val root = requireView()
+        var btnGetExerciseAmmount = root.findViewById<Button>(R.id.getExerciseAmmountBtn)
+        var etExercise = root.findViewById<EditText>(R.id.exerciseET)
+
         var totalCals = root.findViewById<TextView>(R.id.totalCalories)
         var listOfCalories = checkNotNull(arguments?.getDoubleArray("calories"))
         var btnSave = root.findViewById<Button>(R.id.btnAddToDB)
@@ -47,10 +55,28 @@ class OutputFragment : Fragment() {
             calories += element
         }
 
-        totalCals.text = "total amount of calories consumed: ${calories.roundToInt()}"
+        totalCals.text = "Calories consumed: ${calories.roundToInt()}"
         caloriesViewModel = ViewModelProvider(this).get(CaloriesViewModel::class.java)
         btnSave.setOnClickListener {
             insertCalsToDatabase()
+        }
+
+        val nutritionix = NutritionixAPI(calories)
+
+        btnGetExerciseAmmount.setOnClickListener {
+            var exercise = etExercise.text.toString()
+            nutritionix.makeApiCall(exercise)
+            GlobalScope.launch {
+                printOutput(nutritionix)
+            }
+            val loading = LoadingDialog(requireActivity())
+            loading.startLoading()
+            val handler = Handler()
+            handler.postDelayed(object : Runnable{
+                override fun run() {
+                    loading.isDismiss()
+                }
+            },5000)
         }
     }
 
@@ -77,5 +103,18 @@ class OutputFragment : Fragment() {
         progressFragment.arguments = bundle
 
         requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, progressFragment).addToBackStack(null).commit()
+    }
+
+
+    private suspend fun printOutput(nutritionix: NutritionixAPI){
+        delay(5000L)
+        this.activity?.runOnUiThread{
+            var tvOutputExerciseAmount = requireView().findViewById<TextView>(R.id.outputExerciseAmmountTV)
+            var tvExerciseType = requireView().findViewById<TextView>(R.id.exerciseTypeTV)
+
+            tvExerciseType.text = ("Exercise type: "+nutritionix.get_exercise_type())
+            tvOutputExerciseAmount.text = ("Required: "+nutritionix.exerciseAmount+" min")
+
+        }
     }
 }
