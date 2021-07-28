@@ -45,12 +45,11 @@ class OutputFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val root = requireView()
-        var btnGetExerciseAmmount = root.findViewById<Button>(R.id.getExerciseAmmountBtn)
-        var etExercise = root.findViewById<EditText>(R.id.exerciseET)
 
         var totalCals = root.findViewById<TextView>(R.id.totalCalories)
         var listOfCalories = checkNotNull(arguments?.getDoubleArray("calories"))
         var btnSave = root.findViewById<Button>(R.id.btnAddToDB)
+        var btnOpenExerciseFragment = root.findViewById<Button>(R.id.goToExerciseBTN)
         for(element in listOfCalories){
             calories += element
         }
@@ -61,23 +60,11 @@ class OutputFragment : Fragment() {
             insertCalsToDatabase()
         }
 
-        val nutritionix = NutritionixAPI(calories)
-
-        btnGetExerciseAmmount.setOnClickListener {
-            var exercise = etExercise.text.toString()
-            nutritionix.makeApiCall(exercise)
-            GlobalScope.launch {
-                printOutput(nutritionix)
-            }
-            val loading = LoadingDialog(requireActivity())
-            loading.startLoading()
-            val handler = Handler()
-            handler.postDelayed(object : Runnable{
-                override fun run() {
-                    loading.isDismiss()
-                }
-            },5000)
+        btnOpenExerciseFragment.setOnClickListener {
+            goToExerciseFragment()
         }
+
+
     }
 
     private fun insertCalsToDatabase(){
@@ -105,16 +92,14 @@ class OutputFragment : Fragment() {
         requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, progressFragment).addToBackStack(null).commit()
     }
 
+    private fun goToExerciseFragment(){
 
-    private suspend fun printOutput(nutritionix: NutritionixAPI){
-        delay(5000L)
-        this.activity?.runOnUiThread{
-            var tvOutputExerciseAmount = requireView().findViewById<TextView>(R.id.outputExerciseAmmountTV)
-            var tvExerciseType = requireView().findViewById<TextView>(R.id.exerciseTypeTV)
+        val exerciseFragment = ExerciseFragment()
+        val bundle=Bundle()
+        bundle.putDouble("Calories", calories)
+        exerciseFragment.arguments = bundle
 
-            tvExerciseType.text = ("Exercise type: "+nutritionix.get_exercise_type())
-            tvOutputExerciseAmount.text = ("Required: "+nutritionix.exerciseAmount+" min")
-
-        }
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, exerciseFragment).addToBackStack(null).commit()
     }
+
 }
