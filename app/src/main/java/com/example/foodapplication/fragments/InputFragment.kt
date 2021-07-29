@@ -49,6 +49,7 @@ class InputFragment : Fragment(), Callback {
             R.id.logoutMenuItem -> executeLogout()
             R.id.setTimeOfDayItem -> userNotification.showTimePicker()
             R.id.dontNotifyMeItem -> userNotification.cancelAlarm()
+            R.id.show_prog -> gotoProgressFrag()
             R.id.enableBiometrics -> enableBiometrics()
             R.id.disableBiometrics -> disableBiometrics()
         }
@@ -182,5 +183,16 @@ class InputFragment : Fragment(), Callback {
         editor.remove("enabled")
         editor.commit()
 
+    }
+
+    private fun gotoProgressFrag(){
+
+        val progressFragment = ProgressFragment()
+        val bundle=Bundle()
+        val userEmail = getUserEmail()
+        bundle.putString("userEmail", userEmail)
+        progressFragment.arguments = bundle
+
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, progressFragment).addToBackStack(null).commit()
     }
 }

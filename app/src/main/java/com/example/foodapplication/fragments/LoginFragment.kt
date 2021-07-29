@@ -30,7 +30,6 @@ class LoginFragment : Fragment(),TextWatcher {
 
     private lateinit var sharedPreferences: SharedPreferences
     var isRemembered = false
-    private var isLoggedIn = false // sets to true when app opens input fragment to start sending notifications
     private lateinit var cancellationSignal: CancellationSignal
     private val authenticationCallback: BiometricPrompt.AuthenticationCallback = @RequiresApi(Build.VERSION_CODES.P)
     object : BiometricPrompt.AuthenticationCallback(){
@@ -185,7 +184,6 @@ class LoginFragment : Fragment(),TextWatcher {
         inputFragment.arguments = bundle
         transaction.replace(R.id.mainLayout, inputFragment)
         transaction.commit()
-        isLoggedIn = true
     }
 
     private fun gotoRegistration(){
@@ -232,10 +230,6 @@ class LoginFragment : Fragment(),TextWatcher {
         else if(textInputPassword.error == "Field cannot be empty" && password.isNotEmpty()){
             textInputPassword.error = null
         }
-    }
-
-    fun getLoginStatus(): Boolean{
-        return isLoggedIn
     }
 
     private fun notifyUser(message:String){

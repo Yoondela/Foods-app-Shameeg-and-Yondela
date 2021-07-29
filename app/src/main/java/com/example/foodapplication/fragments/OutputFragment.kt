@@ -1,20 +1,14 @@
 package com.example.foodapplication.fragments
 
 import android.os.Bundle
-import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.*
 import android.widget.*
 import androidx.annotation.Nullable
 import androidx.lifecycle.ViewModelProvider
 import com.example.foodapplication.R
-import com.example.foodapplication.exercises.LoadingDialog
-import com.example.foodapplication.exercises.NutritionixAPI
 import com.example.foodapplication.progressDatabase.Calories
 import com.example.foodapplication.progressDatabase.CaloriesViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -63,8 +57,6 @@ class OutputFragment : Fragment() {
         btnOpenExerciseFragment.setOnClickListener {
             goToExerciseFragment()
         }
-
-
     }
 
     private fun insertCalsToDatabase(){
@@ -89,14 +81,15 @@ class OutputFragment : Fragment() {
         bundle.putString("userEmail", userEmail)
         progressFragment.arguments = bundle
 
-        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, progressFragment).addToBackStack(null).commit()
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, progressFragment).commit()
     }
 
     private fun goToExerciseFragment(){
 
         val exerciseFragment = ExerciseFragment()
         val bundle=Bundle()
-        bundle.putDouble("Calories", calories)
+        val userEmail = checkNotNull(arguments?.getString("userEmail"))
+        bundle.putString("userEmail", userEmail)
         exerciseFragment.arguments = bundle
 
         requireActivity().supportFragmentManager.beginTransaction().replace(R.id.mainLayout, exerciseFragment).addToBackStack(null).commit()

@@ -32,4 +32,8 @@
                 android:title="Disable biometrics"/>
         </menu>
     </item>
+    <item
+        android:id="@+id/show_prog"
+        android:title="Show progress"
+        />
 </menu>
