@@ -44,19 +44,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Exercise of choice eg 'run'"
+            android:textColorHint="#9b9b9b"
+            android:textColor="#9b9b9b"
             app:layout_constraintBottom_toTopOf="@+id/getExerciseAmmountBtn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.525"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.864" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/getExerciseAmmountBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="316dp"
-            android:text="GO"
+            android:layout_marginBottom="384dp"
+            android:hint="GO"
+            android:background="#9b9b9b"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
