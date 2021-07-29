@@ -64,12 +64,12 @@ class UserNotification {
             calendar[Calendar.SECOND] = 0
             calendar[Calendar.MILLISECOND] = 0
 
-            setAlarm()
+            setAlarm(calendar)
         }
     }
 
-    fun setAlarm() {
-        calendar = Calendar.getInstance()
+    private fun setAlarm(calendar: Calendar) {
+//        calendar = Calendar.getInstance()
         alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
 
